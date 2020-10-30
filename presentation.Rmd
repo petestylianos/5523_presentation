@@ -1,9 +1,9 @@
 ---
 title: "Final Presentation"
-subtitle: "&#x2694;&#xFE0F; xaringan +<br/>&#x1F60E; xaringanthemer"  
+subtitle: ""  
 author: 
-  - "Yihui Xie"
-  - "Garrick Aden-Buie"
+  - "Panagiotis Stylianos"
+  - "Emily Sheehan"
 date: '`r Sys.Date()`'
 output:
   xaringan::moon_reader:
