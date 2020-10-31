@@ -1,9 +1,9 @@
 ---
 title: "Final Presentation"
-subtitle: "&#x2694;&#xFE0F; xaringan +<br/>&#x1F60E; xaringanthemer"  
+subtitle: "Are different parts of the city windier than others?"  
 author: 
-  - "Yihui Xie"
-  - "Garrick Aden-Buie"
+  - "Panagiotis Stylianos"
+  - "Emily Sheehan"
 date: '`r Sys.Date()`'
 output:
   xaringan::moon_reader:
@@ -17,11 +17,15 @@ output:
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, echo=FALSE)
 ```
 
-```{r xaringan-themer, include=FALSE, warning=FALSE}
+```{r xaringan-themer, message=FALSE, warning=FALSE, include=FALSE }
 library(xaringanthemer)
 library(xaringanExtra)
+library(tidyverse)
+library(leaflet)
+library(patchwork)
 style_duo_accent(
   primary_color = "#1381B0",
   secondary_color = "#FF961C",
@@ -29,13 +33,47 @@ style_duo_accent(
 )
 ```
 
-```{r xaringan-logo, echo=FALSE}
+
+```{r load-data}
+loc <- read_csv("data/locations.csv") %>% 
+  select(c(site_id, description, latitude, longitude)) %>% 
+  as_tibble()
+readings <- read_csv("data/readings.csv")  %>% 
+  as_tibble()
+sensors <- readings %>% 
+  left_join(loc, by = "site_id") 
+```
+
+
+```{r wrangling-data, cache = TRUE}
+sensors_wind <- sensors %>%
+  mutate(month = lubridate::month(local_time)) %>%
+  filter(units == "km/h") %>%
+  mutate(time = format(as.POSIXct(local_time, "%Y-%m-%d %I:%M:%S %p"), format = "%H:%M")) %>%
+  filter(!is.na(value))
+           
+          # strptime(as.POSIXct(local_time), "%I:%M %p"), format="%H:%M:%S"))
+
+sensors_wind_average <- 
+  sensors_wind %>%
+  mutate(average = mean(value)) %>%
+  group_by(average, 
+           description,
+           site_id,
+           month) %>%
+  summarise(average_value = mean(value)) %>%
+  mutate(diff = (average - average_value),
+         diff = round(diff,2))
+```
+
+
+```{r xaringan-logo}
 xaringanExtra::use_logo(
   image_url = "https://www.monash.edu/__data/assets/image/0020/2213408/fb-thumbnail.jpg"
 )
 ```
 
-```{r xaringan-extra-styles, echo=FALSE}
+```{r xaringan-extra-styles}
 xaringanExtra::use_extra_styles(
   hover_code_line = TRUE,         #<<
   mute_unhighlighted_code = TRUE  #<<
@@ -47,21 +85,77 @@ xaringanExtra::use_tile_view()
 ```{r, fig.cap="Pete's Website"}
 knitr::include_graphics("images/qr_pete.png") #<<
 ```
+
 ---
-#  Are different parts of the city windier than others ?   
+#  Are different parts of the city windier than others?   
 
+Yes!
 
-```{r}
+```{r echo=FALSE}
 knitr::include_graphics("https://media1.giphy.com/media/HmTLatwLWpTQk/giphy.gif?cid=ecf05e47155457f6vxh5f6rjvr84ipw53d5vi22i8kvu72dx&rid=giphy.gif") #<<
 ```
-
 
 
 ---
 class: inverse, center, middle
 
-#  How are the wind speed different or similar in different parts of the city?
+#  The Locations
 
+```{r map}
+leaflet(loc) %>% 
+  addProviderTiles("Esri") %>% 
+  addMarkers(lng = loc$longitude,
+             lat = loc$latitude,
+             popup = loc$site_id)
+```
+
+The locations are:
+
+* 141 Grattan St, Carlton
+* 3/121 Grattan St, Carlton
+* 87-89 Grattan St
+* Cnr Pelham and Leicester St
+* Cnr Swanston and Grattan St
+
+---
+
+####  How is the wind speed different or similar in different parts of the city?
+
+```{r echo = FALSE}
+ggplot(sensors_wind_average,
+       aes(x = month,
+           y = diff,
+           fill = description)) +
+  geom_hline(aes(yintercept = 0)) +
+  geom_bar(stat="identity",
+           position = "dodge") +
+  theme_classic() +
+  theme(legend.position = "bottom") +  
+  scale_x_continuous(breaks=seq(1, 12, 1),
+                     labels = c("1" = "Jan",
+                                   "2" = "Feb", 
+                                   "3" = "Mar", 
+                                   "4" = "Apr",
+                                   "5" = "May", 
+                                   "6" = "Jun", 
+                                   "7" = "Jul", 
+                                   "8" = "Aug", 
+                                   "9" = "Sep", 
+                                   "10" = "Oct", 
+                                   "11" = "Nov", 
+                                   "12" = "Dec")) +
+  scale_fill_discrete(name = "Locations",
+                     labels = c("141 Grattan St",
+                                "3/121 Grattan St",
+                                "87-89 Grattan St",
+                                "Cnr Pelham and Leicester St",
+                                "Cnr Swanston and Grattan St")) +
+  xlab("") +
+  ylab("Average monthly wind speed difference") +
+  ggtitle("The Average Monthly Wind Speed Difference (from the Average Wind Speed)")
+```
+
+This graph compares the average monthly wind speed for each location against the average yearly wind speed.
 
 
 ---

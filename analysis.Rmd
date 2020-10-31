@@ -1,0 +1,291 @@
+---
+title: "Untitled"
+author: "Emily Sheehan"
+date: "31/10/2020"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(leaflet)
+library(patchwork)
+```
+
+```{r}
+loc <- read_csv("data/locations.csv") %>% 
+  select(c(site_id, description, latitude, longitude)) %>% 
+  as_tibble()
+readings <- read_csv("data/readings.csv")  %>% 
+  as_tibble()
+```
+
+```{r}
+unique(readings$units)
+```
+
+```{r}
+sensors <- readings %>% 
+  left_join(loc, by = "site_id") 
+```
+
+```{r}
+sensors %>% 
+  group_by(site_id, units) %>% 
+  summarise(mean = mean(value, na.rm = TRUE),
+            min = min(value, na.rm = TRUE),
+            max = max(value, na.rm = TRUE),
+            sd = sd(value, na.rm = TRUE)
+            ) %>% 
+  arrange(units) %>% 
+  View()
+```
+
+```{r}
+leaflet(loc) %>% 
+  addProviderTiles("Esri") %>% 
+  addMarkers(lng = loc$longitude,
+             lat = loc$latitude,
+             popup = loc$site_id)
+```
+
+```{r}
+# density of wind speed
+sensors %>% 
+  filter(units == "km/h") %>% 
+  ggplot(aes(value, group = site_id, fill = site_id )) +
+  geom_density(alpha = 0.4) 
+```
+Are different parts of the city windier than others? How are the wind speed different or similar in different parts of
+the city?
+
+> month to month
+> daily
+> seasons
+> time
+
+
+```{r cache=TRUE}
+sensors_wind <- sensors %>%
+  mutate(month = lubridate::month(local_time)) %>%
+  filter(units == "km/h") %>%
+  mutate(time = format(as.POSIXct(local_time, "%Y-%m-%d %I:%M:%S %p"), format = "%H:%M")) %>%
+  filter(!is.na(value))
+           
+          # strptime(as.POSIXct(local_time), "%I:%M %p"), format="%H:%M:%S"))
+sensors_wind
+```
+
+
+
+
+
+```{r}
+ggplot(sensors_wind,
+       aes(x = month,
+           y = value,
+           group = month)) +
+  geom_boxplot() +
+  facet_wrap(~description)
+```
+
+```{r}
+ggplot(sensors_wind,
+       aes(x = month,
+           y = value,
+           group = description,
+           color = description)) +
+  geom_smooth() +
+  geom_hline(aes(yintercept = mean(value))) +
+
+  scale_x_continuous(breaks=seq(1, 12, 1)) +
+  xlab("Month")
+  ylab("Wind Speed (km/hr)") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+ggplot(sensors_wind,
+       aes(x = site_id,
+           y = value,
+           group = description,
+           color = description)) +
+  geom_boxplot() +
+  geom_hline(aes(yintercept = mean(value))) +
+  #facet_wrap(~description, 
+   #          ncol = 2) +
+  xlab("") +
+  ylab("Wind Speed (km/hr)") +
+  theme_bw() +
+  theme(axis.text.x = element_blank()) 
+
+```
+```{r}
+ggplot(sensors_wind,
+       aes(x = site_id,
+           y = value,
+           group = description,
+           color = description)) +
+  geom_boxplot() +
+  geom_hline(aes(yintercept = mean(value))) +
+  facet_wrap(~month, 
+           ncol = 3) +
+  xlab("") +
+  ylab("Wind Speed (km/hr)") +
+  theme_bw() +
+  theme(axis.text.x = element_blank()) 
+
+```
+
+```{r}
+sensors_wind_average <- 
+  sensors_wind %>%
+  mutate(average = mean(value)) %>%
+  group_by(average, 
+           description,
+           site_id,
+           month) %>%
+  summarise(average_value = mean(value)) %>%
+  mutate(diff = (average - average_value),
+         diff = round(diff,2))
+sensors_wind_average
+```
+
+
+
+```{r}
+ggplot(sensors_wind_average,
+       aes(x = month,
+           y = diff,
+           fill = description)) +
+  geom_bar(stat="identity") +
+  geom_hline(aes(yintercept = 0)) +
+  facet_wrap(~description,
+             ncol = 2) +
+  theme_classic() +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(breaks=seq(1, 12, 1),
+                     labels = c("1" = "Jan",
+                                   "2" = "Feb", 
+                                   "3" = "Mar", 
+                                   "4" = "Apr",
+                                   "5" = "May", 
+                                   "6" = "Jun", 
+                                   "7" = "Jul", 
+                                   "8" = "Aug", 
+                                   "9" = "Sep", 
+                                   "10" = "Oct", 
+                                   "11" = "Nov", 
+                                   "12" = "Dec")) +
+  scale_fill_discrete(name = "Locations",
+                     labels = c("141 Grattan St",
+                                "3/121 Grattan St",
+                                "87-89 Grattan St",
+                                "Cnr Pelham and Leicester St",
+                                "Cnr Swanston and Grattan St")) +
+  xlab("") +
+  ylab("") +
+  ggtitle("")
+```
+```{r}
+ggplot(sensors_wind_average,
+       aes(x = month,
+           y = diff,
+           fill = description)) +
+  geom_hline(aes(yintercept = 0)) +
+  geom_bar(stat="identity",
+           position = "dodge") +
+  theme_classic() +
+  theme(legend.position = "bottom") +  
+  scale_x_continuous(breaks=seq(1, 12, 1),
+                     labels = c("1" = "Jan",
+                                   "2" = "Feb", 
+                                   "3" = "Mar", 
+                                   "4" = "Apr",
+                                   "5" = "May", 
+                                   "6" = "Jun", 
+                                   "7" = "Jul", 
+                                   "8" = "Aug", 
+                                   "9" = "Sep", 
+                                   "10" = "Oct", 
+                                   "11" = "Nov", 
+                                   "12" = "Dec")) +
+  scale_fill_discrete(name = "Locations",
+                     labels = c("141 Grattan St",
+                                "3/121 Grattan St",
+                                "87-89 Grattan St",
+                                "Cnr Pelham and Leicester St",
+                                "Cnr Swanston and Grattan St")) +
+  xlab("") +
+  ylab("Average monthly wind speed difference") +
+  ggtitle("The Average Monthly Wind Speed Difference (from the Average Wind Speed)")
+```
+
+> 
+
+```{r}
+ggplot(sensors_wind_average,
+       aes(x = month,
+           y = diff,
+           fill = description)) +
+  geom_hline(aes(yintercept = 0)) +
+  geom_bar(stat="identity",
+           position = "dodge") +
+    geom_smooth(aes(x = month,
+                    y = diff,
+                    colour = description),
+                se = FALSE,
+                size=0.25) +
+  guides(colour = FALSE) +
+  theme_classic() +
+  theme(legend.position = "bottom") +  
+  scale_x_continuous(breaks=seq(1, 12, 1),
+                     labels = c("1" = "Jan",
+                                   "2" = "Feb", 
+                                   "3" = "Mar", 
+                                   "4" = "Apr",
+                                   "5" = "May", 
+                                   "6" = "Jun", 
+                                   "7" = "Jul", 
+                                   "8" = "Aug", 
+                                   "9" = "Sep", 
+                                   "10" = "Oct", 
+                                   "11" = "Nov", 
+                                   "12" = "Dec")) +
+  scale_fill_discrete(name = "Locations",
+                     labels = c("141 Grattan St",
+                                "3/121 Grattan St",
+                                "87-89 Grattan St",
+                                "Cnr Pelham and Leicester St",
+                                "Cnr Swanston and Grattan St")) +
+  xlab("") +
+  ylab("Average monthly wind speed difference") +
+  ggtitle("The Average Monthly Wind Speed Difference (from the Average Wind Speed)")
+```
+
+```{r}
+ggplot(sensors_wind_average,
+       aes(x = month,
+           y = average_value,
+           group = description,
+           color = description)) +
+  geom_smooth(se = FALSE) +
+
+  scale_x_continuous(breaks=seq(1, 12, 1)) +
+  xlab("Month")
+  ylab("Wind Speed (km/hr)") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+ggplot(sensors_wind_average,
+       aes(x = month,
+           y = average_value,
+           fill = description)) +
+  geom_col() +
+  scale_x_continuous(breaks=seq(1, 12, 1)) +
+  xlab("Month")
+  ylab("Wind Speed (km/hr)") +
+  theme(legend.position = "bottom")
+```
