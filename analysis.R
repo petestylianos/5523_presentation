@@ -22,7 +22,7 @@ readings <- readings %>%
 readings
 
 
-unique(readings$sensor_id)
+unique(readings$units)
 
 # 5 different site_id's
 #18 sensors_id's   12 of those contain EPA
@@ -35,15 +35,19 @@ sensors <- readings %>%
 
 
 sensors %>% 
-  filter(!grepl("EPA", sensor_id)) %>% 
-  group_by(site_id, sensor_id, units) %>% 
+  filter(!grepl("EPA", sensor_id),
+         units == "km/h") %>% 
+  group_by(site_id, sensor_id, type, units) %>% 
   summarise(mean = mean(value, na.rm = TRUE),
             min = min(value, na.rm = TRUE),
             max = max(value, na.rm = TRUE),
             sd = sd(value, na.rm = TRUE)
   ) %>% 
   arrange(units) %>% 
-  View()
+  knitr::kable() %>% 
+  kableExtra::kable_styling()
+  
+
 
 
 
@@ -56,12 +60,6 @@ leaflet(loc) %>%
 
 
 
-# density of wind speed
-
-sensors %>% 
-  filter(units == "km/h") %>% 
-  ggplot(aes(value, group = site_id, fill = site_id )) +
-  geom_density(alpha = 0.4) 
 
 
 monthly_sensors <-  sensors %>% 
@@ -75,13 +73,6 @@ monthly_sensors <-  sensors %>%
 
 
 
-
-monthly_sensors %>% 
-  filter(units == "km/h") %>% 
-  group_by(month) %>% 
-  ggplot(aes(x = site_id, y = value,   group = site_id, fill = site_id )) +
-  geom_boxplot() +
-  facet_wrap(~month)
 
 
 mean_wind <- sensors %>%
@@ -140,6 +131,17 @@ sensors %>%
   ggplot(aes(x = value)) +
   geom_histogram() +
   facet_wrap(~ site_id) 
+
+# missing  wind speed data
+
+sensors %>% 
+  filter(units == "km/h") %>% 
+  ggplot(aes(value, group = site_id, fill = site_id )) +
+  geom_histogram(alpha = 0.4) +
+  theme_bw() 
+
+
+
 ## We only have observations when wind speed was 0 and then when wind speed
 ## was above 4, and no values in between, is this a mistake ?
 
@@ -214,7 +216,7 @@ monthly_sensors %>%
   filter(units == "km/h") %>% 
   ggplot(aes(x = as.factor(hour), y = value, fill = site_id)) +
   geom_boxplot() +
-  facet_wrap(~site_id) 
+  facet_wrap(~site_id, ncol = 2) 
 
 
 ##The difference in temperature causes differences in air pressure between

@@ -8,17 +8,44 @@ date: '`r Sys.Date()`'
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: xaringan-themer.css
+    css: ["ninjutsu", "lucy", "my_style.css"]
+    seal: false
+    includes:
+       after_body: "collapseoutput.js"
     nature:
-      highlightStyle: github
+      highlightStyle: github 
+      highlightLanguage: r 
       highlightLines: true
+      highlightSpans: false 
       countIncrementalSlides: false
+      slideNumberFormat: '%current%/%total%'
+      ratio: '16:9'
 ---
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, echo=FALSE)
 ```
+class: title-slide, my-one-page-font 
+
+
+
+_.left[ETC5523: Final Presentation]_
+<br>
+
+.left[Authors: <br><br>
+.orange[Emily Sheehan] <br><br>
+.orange[Panagiotis Stylianos]
+]  <br>
+
+_.left[`r Sys.Date()`]_
+
+
+
+.footer[`r icon::fa('book')` ETC5523:Communicating with Data]
+
+---
+
 
 ```{r xaringan-themer, message=FALSE, warning=FALSE, include=FALSE }
 library(xaringanthemer)
@@ -26,6 +53,11 @@ library(xaringanExtra)
 library(tidyverse)
 library(leaflet)
 library(patchwork)
+library(anicon)
+library("countdown")
+library(calendR)
+library(lubridate)
+
 style_duo_accent(
   primary_color = "#1381B0",
   secondary_color = "#FF961C",
@@ -71,6 +103,8 @@ sensors_wind_average <-
 xaringanExtra::use_logo(
   image_url = "https://www.monash.edu/__data/assets/image/0020/2213408/fb-thumbnail.jpg"
 )
+xaringanExtra::use_webcam(width = 300, height = 225)
+xaringanExtra::use_slide_tone()
 ```
 
 ```{r xaringan-extra-styles}
@@ -81,12 +115,6 @@ xaringanExtra::use_extra_styles(
 xaringanExtra::use_tile_view()
 ```
 
-
-```{r, fig.cap="Pete's Website"}
-knitr::include_graphics("images/qr_pete.png") #<<
-```
-
----
 #  Are different parts of the city windier than others?   
 
 Yes!
@@ -94,21 +122,22 @@ Yes!
 ```{r echo=FALSE}
 knitr::include_graphics("https://media1.giphy.com/media/HmTLatwLWpTQk/giphy.gif?cid=ecf05e47155457f6vxh5f6rjvr84ipw53d5vi22i8kvu72dx&rid=giphy.gif") #<<
 ```
-
-
 ---
-class: inverse, center, middle
+class: inverse, center, middle, split-two with-thick-border border-green
 
 #  The Locations
 
-```{r map}
+.column.bg-main1[
+```{r map, echo=FALSE}
 leaflet(loc) %>% 
   addProviderTiles("Esri") %>% 
   addMarkers(lng = loc$longitude,
              lat = loc$latitude,
              popup = loc$site_id)
 ```
+]
 
+.column.bg-main1[
 The locations are:
 
 * 141 Grattan St, Carlton
@@ -116,7 +145,59 @@ The locations are:
 * 87-89 Grattan St
 * Cnr Pelham and Leicester St
 * Cnr Swanston and Grattan St
+]
+---
+class: split-three with-thick-border border-green
 
+
+# View
+
+.column.bg-main1[.content[
+
+### .green[Arc1043, Arc1048, Arc1050]
+<br>
+<center>
+<img class="border-box" src="https://i1.au.reastatic.net/768x512-smart=75,r=33,g=40,b=46,quality=60,progressive/acd0a8aa867bac0b555c01d972e4b10633f4f791444107425f2c691a0b05dacb/image0.jpg" width = "200px">
+</center>
+<br>
+
+*Three of the sensors are located in:*
+
+*Grattan Street Carlton*
+
+]]
+
+.column.bg-main1[.content[
+
+### Arc.1046
+
+<br>
+<center>
+<img class="border-box" src="https://i2.au.reastatic.net/800x600/a487bda2e0d2c2761726a10a4eb376eea12fe2165b226dc8cff2b99c97612fc7/image.jpg" width = "200px">
+</center>
+<br><br>
+
+*One sensors is located in:*
+
+*Corner of Swanston and Grattan Streets, Carlton*
+
+]]
+
+.column.bg-main1[.content[
+
+### Arc.1047
+
+<br>
+<center>
+<img class="border-box" src="https://www.commo.com.au/sites/default/files/styles/front_left_column/public/carltonpellhamst147155dronedji_0063_002.jpg?itok=ZrZPS3JQ" width = "200px">
+</center>
+<br>
+
+*.yellow[One sensors is located in:]*
+
+*Corner of Pelham and Leicester Streets, Carlton*
+
+]]
 ---
 
 ####  How is the wind speed different or similar in different parts of the city?
@@ -159,6 +240,215 @@ This graph compares the average monthly wind speed for each location against the
 
 
 ---
+# Can we trust the data ❓
+
+<br>
+
+<blockquote>
+For our results to be mpla mpla
+<br>—Pete Styl<br>
+
+</blockquote>
+
+--
+
+<br>
+
+Let's review potential indicators of miss-readings 
+---
+
+## Monthly differences
+```{r, echo=FALSE}
+monthly_sensors <-  sensors %>% 
+  mutate(day = lubridate::ymd(as.Date(local_time)),
+         month = lubridate::month(local_time),
+         hour = hour(as_datetime(local_time))
+  )
+
+
+monthly_sensors %>% 
+  filter(units == "km/h") %>% 
+  ggplot(aes(x = as.factor(month), y = value, fill = site_id)) +
+  geom_boxplot() +
+  facet_wrap(~site_id)
+```
+
+---
+## Hourly differences
+
+
+```{r, echo=FALSE}
+monthly_sensors %>% 
+  filter(units == "km/h") %>% 
+  ggplot(aes(x = as.factor(hour), y = value, fill = site_id)) +
+  geom_boxplot() +
+  facet_wrap(~site_id, ncol = 2) 
+
+```
+
+
+
+---
+## Wind Speed per Day 
+
+```{r, echo=FALSE}
+
+mean_wind <- sensors %>%
+  filter(units == "km/h") %>%
+  summarise(mean = mean(value, na.rm = TRUE)) %>% 
+  pull(mean) %>% 
+  as.numeric()
+
+wind_by_day <-   monthly_sensors %>%
+  group_by(day) %>% 
+  filter(units == "km/h") %>%
+  summarise(mean_day_wind = mean(value, na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  filter(mean_day_wind >= mean_wind) %>% 
+  select(day) %>% 
+  mutate(cal_day =
+           case_when(
+             day < "2020-01-01" ~
+               day - as.Date(as.character("2019-01-01"), format="%Y-%m-%d"),
+             day >= "2020-01-01" ~
+               day - as.Date(as.character("2020-01-01"), format="%Y-%m-%d")
+             
+           )
+  )
+
+
+calendR(year = 2020,
+        start = "M",
+        special.days = wind_by_day$cal_day,
+        special.col = "green",            # Color of the specified days
+        low.col = "white",
+        weeknames.size = 3,
+        day.size = 2,
+        orientation ="p",
+        title = "",
+        subtitle = "") +
+  tvthemes::theme_avatar() +
+  theme(
+    legend.position = "none"
+  ) +
+  labs(
+    title = "Days with above average wind speed"
+  )
+
+
+
+```
+
+
+
+---
+class: center, inverse
+
+`r anicon::faa("exclamation-triangle", animate="vertical", size = 3)`
+
+```{r}
+sensors %>% 
+  filter(units == "km/h") %>% 
+  ggplot(aes(value, group = site_id, fill = site_id )) +
+  geom_histogram(alpha = 0.4) +
+  theme_bw() 
+
+```
+
+
+`r anicon::nia("No values between 0.01 and 4", animate = "tada")`
+
+---
+class: middle center bg-main1
+
+# Wind
+
+# 風
+
+--
+## The Japanese word for wind
+
+--
+
+<img src="https://c4.wallpaperflare.com/wallpaper/30/379/591/anime-landscape-wallpaper-preview.jpg" width="40%">
+
+--
+
+This slide is a tribute to _Yihui Xie_ creator of __[xaringan]("https://slides.yihui.org/xaringan/#1")__
+
+
+---
+class: question middle
+
+Questions?
+
+```{r}
+xaringanExtra::use_editable()
+```
+
+Questions: <br>
+
+<span style="color:blue";>.can-edit[--]</span>
+
+
+`r countdown::countdown(2, class="clock", right = "30px", 
+play_sound = TRUE,
+color_border              = "blue",
+  color_text                = "blue",
+  color_running_background  = "cyan",
+  color_finished_background = "red")`
+
+---
+class: split-three white center
+
+.row.bg-main1[.content.vmiddle[
+# Conclusion: What facros affect wind speed ?
+]]
+.row.bg-main2[
+.split-three[
+.column[
+]
+.column[
+# Temp, Press
+
+]
+.column[
+
+]
+]
+]
+.row.bg-main3[.content.vmiddle[
+# When there is a significand differece between them
+]]
+
+---
+
+```{r xaringan-panelset, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+.panelset[
+.panel[.panel-name[R Code]
+
+```{r panel-chunk, fig.show='hide'}
+# ... r code ...
+```
+]
+
+.panel[.panel-name[Plot]
+
+![](README_files/figure-gfm/panel-chunk-1.png)
+]
+]
+---
+## Find us
+
+```{r, fig.cap="Pete's Website", echo=FALSE}
+knitr::include_graphics("images/qr_pete.png") #<<
+```
+
+---
+## How did you find our presentation ?
 ```{r}
 htmltools::HTML('<iframe src="https://pollev.com/petestyliano835"width="100%" height="100%"  frameBorder="0"></iframe>')
 
@@ -170,5 +460,4 @@ htmltools::HTML('<iframe src="https://pollev.com/petestyliano835"width="100%" he
 htmltools::HTML('<iframe src="https://www.polleverywhere.com/multiple_choice_polls/KQpS3Uo9TAd54YqLJPCO1" width="100%" height="100%" frameBorder="0"></iframe>')
 
 ```
-
 
