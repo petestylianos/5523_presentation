@@ -1,51 +1,70 @@
-library(tidyverse)
-library(leaflet)
-library(patchwork)
-
-loc <- read_csv("data/locations.csv") %>% 
-  select(c(site_id, description, latitude, longitude)) %>% 
-  as_tibble()
-
-loc
 
 
-readings <- read_csv("data/readings.csv")  %>% 
-  as_tibble()
 
-readings
-unique(readings$units)
 
-sensors <- readings %>% 
-  left_join(loc, by = "site_id") 
+
+
+wind_temp <- sensors %>% 
+  filter(units == "km/h" | units == "C" | units == "hPa",
+         sensor_id != "5a.EPA-1h") %>% 
+  janitor::clean_names()
+
+C <- wind_temp %>% 
+  filter(site_id == "arc1045")  %>%
+  pivot_wider(names_from = units, values_from = value) %>% 
+  select(c("C", "km/h")) %>% 
+  pull("C") %>% 
+  na.omit()
+
+
+km <- wind_temp %>% 
+  filter(site_id == "arc1045")  %>%
+  pivot_wider(names_from = units, values_from = value) %>% 
+  select(c("C", "km/h")) %>% 
+  pull("km/h") %>% 
+  na.omit()
+
+
+hpa <- wind_temp %>% 
+  filter(site_id == "arc1045")  %>%
+  pivot_wider(names_from = units, values_from = value) %>% 
+  select(c("C", "km/h", "hPa")) %>% 
+  pull("hPa") %>% 
+  na.omit()
+
+
+dat <- tibble(
+  temp = C[1:30871],
+  km = km,
+  pres = hpa[1:30871]
+)
+
+dat %>% 
+  filter(km >= 4) %>% 
+  ggplot(aes(km, pres)) +
+  geom_point()
+
+cor(dat$temp, dat$km)
+
 
 
 
 sensors %>% 
-  group_by(site_id, units) %>% 
-  summarise(mean = mean(value, na.rm = TRUE),
-            min = min(value, na.rm = TRUE),
-            max = max(value, na.rm = TRUE),
-            sd = sd(value, na.rm = TRUE)
-            ) %>% 
-  arrange(units) %>% 
-  View()
+  filter(units == "hPa") %>% 
+  ggplot(aes(x = value)) +
+  geom_histogram()
+
+
+
+unique(sensors$units)
 
 
 
 
-leaflet(loc) %>% 
-  addProviderTiles("Esri") %>% 
-  addMarkers(lng = loc$longitude,
-             lat = loc$latitude,
-             popup = loc$site_id)
-
-
-
-# density of wind speed
 
 sensors %>% 
   filter(units == "km/h") %>% 
-  ggplot(aes(value, group = site_id, fill = site_id )) +
-  geom_density(alpha = 0.4) 
+  summarise(max = max(value, na.rm =T))
   
-  
+
+
