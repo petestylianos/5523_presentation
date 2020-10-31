@@ -65,9 +65,58 @@ the city?
 
 
 ```{r cache=TRUE}
-sensors <- sensors %>%
-  mutate(month = lubridate::month(local_time),
-         hour = format(strptime(as.POSIXct(local_time), "%I:%M %p"), format="%H:%M:%S"))
-sensors
+sensors_wind <- sensors %>%
+  mutate(month = lubridate::month(local_time)) %>%
+  filter(units == "km/h") %>%
+  mutate(time = format(as.POSIXct(local_time, "%Y-%m-%d %I:%M:%S %p"), format = "%H:%M")) %>%
+  filter(!is.na(value))
+           
+          # strptime(as.POSIXct(local_time), "%I:%M %p"), format="%H:%M:%S"))
+sensors_wind
 ```
 
+
+
+
+
+```{r}
+ggplot(sensors_wind,
+       aes(x = month,
+           y = value,
+           group = month)) +
+  geom_boxplot() +
+  facet_wrap(~description)
+```
+
+
+
+```{r}
+ggplot(sensors_wind,
+       aes(x = month,
+           y = value,
+           group = description,
+           color = description)) +
+  geom_smooth() +
+  geom_hline(aes(yintercept = mean(value))) +
+  #facet_wrap(~description, 
+   #          ncol = 2) +
+  ylab("Wind Speed (km/hr)") +
+  theme_bw()
+```
+
+```{r}
+ggplot(sensors_wind,
+       aes(x = site_id,
+           y = value,
+           group = description,
+           color = description)) +
+  geom_boxplot() +
+  geom_hline(aes(yintercept = mean(value))) +
+  #facet_wrap(~description, 
+   #          ncol = 2) +
+  xlab("") +
+  ylab("Wind Speed (km/hr)") +
+  theme_bw() +
+  theme(axis.text.x = element_blank()) 
+
+```
