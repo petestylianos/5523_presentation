@@ -88,8 +88,6 @@ ggplot(sensors_wind,
   facet_wrap(~description)
 ```
 
-
-
 ```{r}
 ggplot(sensors_wind,
        aes(x = month,
@@ -139,3 +137,91 @@ ggplot(sensors_wind,
 
 ```
 
+```{r}
+sensors_wind_average <- 
+  sensors_wind %>%
+  mutate(average = mean(value)) %>%
+  group_by(average, 
+           description,
+           site_id,
+           month) %>%
+  summarise(average_value = mean(value)) %>%
+  mutate(diff = (average - average_value),
+         diff = round(diff,2)) 
+sensors_wind_average
+```
+
+
+
+```{r}
+ggplot(sensors_wind_average,
+       aes(x = month,
+           y = diff)) +
+  geom_bar(stat="identity") +
+  facet_wrap(~description,
+             ncol = 2) +
+  theme_classic() +
+  xlab("") +
+  ylab("") +
+  scale_x_continuous(breaks=seq(1, 12, 1)) +
+  ggtitle("")
+```
+```{r}
+ggplot(sensors_wind_average,
+       aes(x = month,
+           y = diff,
+           fill = description)) +
+  geom_bar(stat="identity",
+           position = "dodge") +
+  theme_classic() +
+  theme(legend.position = "bottom") +
+  scale_x_continuous(breaks=seq(1, 12, 1),
+                     labels = c("1" = "Jan",
+                                   "2" = "Feb", 
+                                   "3" = "Mar", 
+                                   "4" = "Apr",
+                                   "5" = "May", 
+                                   "6" = "Jun", 
+                                   "7" = "Jul", 
+                                   "8" = "Aug", 
+                                   "9" = "Sep", 
+                                   "10" = "Oct", 
+                                   "11" = "Nov", 
+                                   "12" = "Dec")) +
+  scale_fill_discrete(name = "Locations",
+                     labels = c("141 Grattan St",
+                                "3/121 Grattan St",
+                                "87-89 Grattan St",
+                                "Cnr Pelham and Leicester St",
+                                "Cnr Swanston and Grattan St")) +
+  xlab("") +
+  ylab("") +
+  ggtitle("")
+```
+
+```{r}
+ggplot(sensors_wind_average,
+       aes(x = month,
+           y = average_value,
+           group = description,
+           color = description)) +
+  geom_smooth(se = FALSE) +
+
+  scale_x_continuous(breaks=seq(1, 12, 1)) +
+  xlab("Month")
+  ylab("Wind Speed (km/hr)") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+ggplot(sensors_wind_average,
+       aes(x = month,
+           y = average_value,
+           fill = description)) +
+  geom_col() +
+  scale_x_continuous(breaks=seq(1, 12, 1)) +
+  xlab("Month")
+  ylab("Wind Speed (km/hr)") +
+  theme(legend.position = "bottom")
+```
