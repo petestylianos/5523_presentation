@@ -147,7 +147,7 @@ sensors_wind_average <-
            month) %>%
   summarise(average_value = mean(value)) %>%
   mutate(diff = (average - average_value),
-         diff = round(diff,2)) 
+         diff = round(diff,2))
 sensors_wind_average
 ```
 
@@ -156,23 +156,12 @@ sensors_wind_average
 ```{r}
 ggplot(sensors_wind_average,
        aes(x = month,
-           y = diff)) +
-  geom_bar(stat="identity") +
-  facet_wrap(~description,
-             ncol = 2) +
-  theme_classic() +
-  xlab("") +
-  ylab("") +
-  scale_x_continuous(breaks=seq(1, 12, 1)) +
-  ggtitle("")
-```
-```{r}
-ggplot(sensors_wind_average,
-       aes(x = month,
            y = diff,
            fill = description)) +
-  geom_bar(stat="identity",
-           position = "dodge") +
+  geom_bar(stat="identity") +
+  geom_hline(aes(yintercept = 0)) +
+  facet_wrap(~description,
+             ncol = 2) +
   theme_classic() +
   theme(legend.position = "bottom") +
   scale_x_continuous(breaks=seq(1, 12, 1),
@@ -197,6 +186,79 @@ ggplot(sensors_wind_average,
   xlab("") +
   ylab("") +
   ggtitle("")
+```
+```{r}
+ggplot(sensors_wind_average,
+       aes(x = month,
+           y = diff,
+           fill = description)) +
+  geom_hline(aes(yintercept = 0)) +
+  geom_bar(stat="identity",
+           position = "dodge") +
+  theme_classic() +
+  theme(legend.position = "bottom") +  
+  scale_x_continuous(breaks=seq(1, 12, 1),
+                     labels = c("1" = "Jan",
+                                   "2" = "Feb", 
+                                   "3" = "Mar", 
+                                   "4" = "Apr",
+                                   "5" = "May", 
+                                   "6" = "Jun", 
+                                   "7" = "Jul", 
+                                   "8" = "Aug", 
+                                   "9" = "Sep", 
+                                   "10" = "Oct", 
+                                   "11" = "Nov", 
+                                   "12" = "Dec")) +
+  scale_fill_discrete(name = "Locations",
+                     labels = c("141 Grattan St",
+                                "3/121 Grattan St",
+                                "87-89 Grattan St",
+                                "Cnr Pelham and Leicester St",
+                                "Cnr Swanston and Grattan St")) +
+  xlab("") +
+  ylab("Average monthly wind speed difference") +
+  ggtitle("The Average Monthly Wind Speed Difference (from the Average Wind Speed)")
+```
+
+```{r}
+ggplot(sensors_wind_average,
+       aes(x = month,
+           y = diff,
+           fill = description)) +
+  geom_hline(aes(yintercept = 0)) +
+  geom_bar(stat="identity",
+           position = "dodge") +
+    geom_smooth(aes(x = month,
+                    y = diff,
+                    colour = description),
+                se = FALSE,
+                size=0.25) +
+  guides(colour = FALSE) +
+  theme_classic() +
+  theme(legend.position = "bottom") +  
+  scale_x_continuous(breaks=seq(1, 12, 1),
+                     labels = c("1" = "Jan",
+                                   "2" = "Feb", 
+                                   "3" = "Mar", 
+                                   "4" = "Apr",
+                                   "5" = "May", 
+                                   "6" = "Jun", 
+                                   "7" = "Jul", 
+                                   "8" = "Aug", 
+                                   "9" = "Sep", 
+                                   "10" = "Oct", 
+                                   "11" = "Nov", 
+                                   "12" = "Dec")) +
+  scale_fill_discrete(name = "Locations",
+                     labels = c("141 Grattan St",
+                                "3/121 Grattan St",
+                                "87-89 Grattan St",
+                                "Cnr Pelham and Leicester St",
+                                "Cnr Swanston and Grattan St")) +
+  xlab("") +
+  ylab("Average monthly wind speed difference") +
+  ggtitle("The Average Monthly Wind Speed Difference (from the Average Wind Speed)")
 ```
 
 ```{r}
