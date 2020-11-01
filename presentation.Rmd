@@ -24,7 +24,7 @@ output:
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-knitr::opts_chunk$set(message=FALSE, warning=FALSE, echo=FALSE, cache = TRUE)
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, echo=FALSE)
 ```
 class: title-slide, my-one-page-font 
 
@@ -117,7 +117,7 @@ xaringanExtra::use_tile_view()
 
 #  Are different parts of the city windier than others?   
 
-## Yes!
+### .white[Yes!]
 
 ```{r echo=FALSE}
 knitr::include_graphics("https://media1.giphy.com/media/HmTLatwLWpTQk/giphy.gif?cid=ecf05e47155457f6vxh5f6rjvr84ipw53d5vi22i8kvu72dx&rid=giphy.gif") #<<
@@ -138,38 +138,44 @@ leaflet(loc) %>%
 ]
 
 .column.bg-main1[
-The locations are:
+### .white[**The location of the five sensors are:**]
 
-* 141 Grattan St, Carlton
-* 3/121 Grattan St, Carlton
-* 87-89 Grattan St
-* Cnr Pelham and Leicester St
-* Cnr Swanston and Grattan St
+### .white[141 Grattan St, Carlton] <br>
+### .white[3/121 Grattan St, Carlton] <br>
+### .white[87-89 Grattan St] <br>
+### .white[Cnr Pelham and Leicester St] <br>
+### .white[Cnr Swanston and Grattan St] <br>
 ]
 ---
 class: split-three with-thick-border border-green
 
 
-# View
+
 
 .column.bg-main1[.content[
 
-### .green[Arc1043, Arc1048, Arc1050]
+### .white[Grattan Street, Carlton]
+
 <br>
 <center>
 <img class="border-box" src="https://i1.au.reastatic.net/768x512-smart=75,r=33,g=40,b=46,quality=60,progressive/acd0a8aa867bac0b555c01d972e4b10633f4f791444107425f2c691a0b05dacb/image0.jpg" width = "200px">
 </center>
 <br>
 
-*Three of the sensors are located in:*
+The three sensors that are located at *Grattan Street, Carlton* are:
 
-*Grattan Street Carlton*
+Arc1043
+
+Arc1048
+
+Arc1050
 
 ]]
 
 .column.bg-main1[.content[
 
-### Arc.1046
+### .white[Cnr of Swanston and Grattan Street, Carlton]
+
 
 <br>
 <center>
@@ -177,15 +183,16 @@ class: split-three with-thick-border border-green
 </center>
 <br><br>
 
-*One sensors is located in:*
+The sensor that is located at *the corner of Swanston and Grattan Street, Carlton* is:
 
-*Corner of Swanston and Grattan Streets, Carlton*
+Arc.1046
 
 ]]
 
 .column.bg-main1[.content[
 
-### Arc.1047
+### .white[Cnr of Pelham and Leicester Street, Carlton]
+
 
 <br>
 <center>
@@ -193,9 +200,9 @@ class: split-three with-thick-border border-green
 </center>
 <br>
 
-*.yellow[One sensors is located in:]*
+The sensor that is located at *the corner of Pelham and Leicester Street, Carlton* is:
 
-*Corner of Pelham and Leicester Streets, Carlton*
+Arc.1047
 
 ]]
 ---

@@ -13,5 +13,9 @@
 
 .remark-slide-content {
     font-family: avenir;
-    background-color: #575757;
+    background-color: #b3b3b3;
+}
+
+strong {
+    color: white;
 }
