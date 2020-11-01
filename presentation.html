@@ -27,17 +27,17 @@
     <script src="libs/leaflet-binding/leaflet.js"></script>
     <script src="libs/leaflet-providers/leaflet-providers_1.9.0.js"></script>
     <script src="libs/leaflet-providers-plugin/leaflet-providers-plugin.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
     <link href="libs/font-awesome-animation/font-awesome-animation-emi.css" rel="stylesheet" />
     <script src="libs/fontawesome/js/fontawesome-all.min.js"></script>
-    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"b36bf3749e9b4e04b851c10300ad9395","expires":14}</script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x37c1a90e70242fbae44ad66116c17b2","expires":14}</script>
     <script src="libs/himalaya/himalaya.js"></script>
     <script src="libs/js-cookie/js.cookie.js"></script>
     <link href="libs/editable/editable.css" rel="stylesheet" />
     <script src="libs/editable/editable.js"></script>
     <link href="libs/countdown/countdown.css" rel="stylesheet" />
     <script src="libs/countdown/countdown.js"></script>
-    <link href="libs/panelset/panelset.css" rel="stylesheet" />
-    <script src="libs/panelset/panelset.js"></script>
     <link rel="stylesheet" href="my_style.css" type="text/css" />
   </head>
   <body>
@@ -196,15 +196,42 @@ Arc.1047
 ]]
 ---
 
-####  How is the wind speed different or similar in different parts of the city?
+#### How is the wind speed different between sensors?
 
-![](presentation_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+
+.panelset[
+.panel[.panel-name[Summary]
 
 This graph compares the average monthly wind speed for each location against the average yearly wind speed.
 
+To generate this graph we calculated the average yearly wind speed over the year for all locations, and then calculated the difference for each location and month.
+
+The insights that we drew were:
+
+The summer months are less windy and the winter months have the highest wind speeds.
+
+The Cnr of Pelham and Leicester St and 87-89 Grattan St are the windiest areas over the year as they are consistently above the yearly average wind speed.
+
+The Cnr of Swanston and Grattan has higher wind speeds in September and October
+
+The most .white[**interesting**] insight was that the wind speed varies .white[**greatly**] in Grattan St.
+
+
+
+
+
+]
+
+.panel[.panel-name[Plot]
+![](presentation_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+]
+]
+
+
 
 ---
-# Can we trust the data ❓
+# Can we trust the data❓
 
 &lt;br&gt;
 
@@ -218,14 +245,22 @@ For our results to be mpla mpla
 
 &lt;br&gt;
 
-Let's review potential indicators of miss-readings 
+Let's review the quality of the dataset.
 ---
 
-## Monthly differences
+## .white[Monthly differences]
+
+.panelset[
+.panel[.panel-name[Summary]
+]
+
+.panel[.panel-name[Plot]
 ![](presentation_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+]
+]
 
 ---
-## Hourly differences
+## .white[Hourly differences]
 
 
 ![](presentation_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
@@ -280,7 +315,7 @@ Questions: &lt;br&gt;
 &lt;span style="color:blue";&gt;.can-edit[--]&lt;/span&gt;
 
 
-<div class="countdown clock" id="timer_5f9e0d6f" style="right:30px;bottom:0;" data-audio="true" data-warnwhen="0">
+<div class="countdown clock" id="timer_5f9e370e" style="right:30px;bottom:0;" data-audio="true" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 

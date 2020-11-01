@@ -207,9 +207,37 @@ Arc.1047
 ]]
 ---
 
-####  How is the wind speed different or similar in different parts of the city?
+#### How is the wind speed different between sensors?
 
-```{r echo = FALSE, cache = TRUE}
+```{r xaringan-panelset-1, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+.panelset[
+.panel[.panel-name[Summary]
+
+This graph compares the average monthly wind speed for each location against the average yearly wind speed.
+
+To generate this graph we calculated the average yearly wind speed over the year for all locations, and then calculated the difference for each location and month.
+
+The insights that we drew were:
+
+The summer months are less windy and the winter months have the highest wind speeds.
+
+The Cnr of Pelham and Leicester St and 87-89 Grattan St are the windiest areas over the year as they are consistently above the yearly average wind speed.
+
+The Cnr of Swanston and Grattan has higher wind speeds in September and October
+
+The most .white[**interesting**] insight was that the wind speed varies .white[**greatly**] in Grattan St.
+
+
+
+
+
+]
+
+.panel[.panel-name[Plot]
+```{r echo = FALSE, cache = TRUE, fig.width=14, fig.height=6}
 ggplot(sensors_wind_average,
        aes(x = month,
            y = diff,
@@ -242,12 +270,13 @@ ggplot(sensors_wind_average,
   ylab("Average monthly wind speed difference") +
   ggtitle("The Average Monthly Wind Speed Difference (from the Average Wind Speed)")
 ```
+]
+]
 
-This graph compares the average monthly wind speed for each location against the average yearly wind speed.
 
 
 ---
-# Can we trust the data ❓
+# Can we trust the data❓
 
 <br>
 
@@ -261,10 +290,16 @@ For our results to be mpla mpla
 
 <br>
 
-Let's review potential indicators of miss-readings 
+Let's review the quality of the dataset.
 ---
 
-## Monthly differences
+## .white[Monthly differences]
+
+.panelset[
+.panel[.panel-name[Summary]
+]
+
+.panel[.panel-name[Plot]
 ```{r, echo=FALSE, cache = TRUE}
 monthly_sensors <-  sensors %>% 
   mutate(day = lubridate::ymd(as.Date(local_time)),
@@ -277,11 +312,13 @@ monthly_sensors %>%
   filter(units == "km/h") %>% 
   ggplot(aes(x = as.factor(month), y = value, fill = site_id)) +
   geom_boxplot() +
-  facet_wrap(~site_id)
+  facet_wrap(~description)
 ```
+]
+]
 
 ---
-## Hourly differences
+## .white[Hourly differences]
 
 
 ```{r, echo=FALSE}

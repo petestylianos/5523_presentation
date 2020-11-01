@@ -19,3 +19,8 @@
 strong {
     color: white;
 }
+
+.panelset .panel-tabs .panel-tab {
+    min-height: 20px;}
+    li {
+    font-size: 15px;}
