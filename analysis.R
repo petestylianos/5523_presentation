@@ -32,6 +32,15 @@ sensors <- readings %>%
   left_join(loc, by = "site_id") 
 
 
+sensors %>% 
+  filter(!grepl("EPA", sensor_id)) %>% 
+  group_by(site_id, sensor_id, type, units) %>% 
+  summarise(mean = mean(value, na.rm = TRUE),
+            min = min(value, na.rm = TRUE),
+            max = max(value, na.rm = TRUE),
+            sd = sd(value, na.rm = TRUE)
+  ) %>% View()
+
 
 
 sensors %>% 
@@ -47,6 +56,7 @@ sensors %>%
   knitr::kable() %>% 
   kableExtra::kable_styling()
   
+
 
 
 
@@ -224,3 +234,115 @@ monthly_sensors %>%
 ##inds as the atmosphere tries to equalize the air pressure. Generally, the l
 ##arger the temperature difference, the stronger the resulting winds will be.
 
+
+
+
+
+
+tree_data0 <- read_csv("trees_raw.csv")
+
+tree_data <- tree_data0 %>% 
+  rename(Dateplanted = `Date Planted`,
+         Yearplanted = `Year Planted`) %>%  
+  mutate(Dateplanted = dmy(Dateplanted), # also make_date() produces the same result
+         Year = year(Dateplanted))           # extract the year from a date object
+
+tree_data_clean0 <- tree_data %>%
+  filter(!is.na(Dateplanted))
+
+tree_data_clean <- tree_data_clean0 %>% 
+  mutate(Year = case_when(
+    Yearplanted != year(Dateplanted) ~  Yearplanted,
+    TRUE ~ Year
+  ))
+
+
+
+
+leaflet() %>% 
+  addProviderTiles("Esri") %>% 
+  addMarkers(lng = loc$longitude,
+             lat = loc$latitude,
+             popup = loc$site_id
+  )
+
+melb_map <- read_rds(here::here("melb-map.rds"))
+
+
+library(ggmap)
+
+tree_sub <- tree_data_clean %>% 
+  filter(Longitude > 144.96,
+         Latitude > -37.803)
+
+ggmap(melb_map) +
+  geom_point(data = tree_data_clean, 
+             aes(Longitude,
+                 Latitude),
+             colour = "#006400", 
+             alpha = 0.7, 
+             size = 0.4) +
+  geom_point(data = loc,
+             aes(longitude,
+                 latitude),
+             colour = "red", 
+             alpha = 0.7, 
+             size = 3)
+             
+
+             
+             
+tree_sub <- tree_data_clean %>% 
+  filter(Longitude > 144.96 & Longitude < 144.967,
+         Latitude > -37.804  & Latitude < -37.799)
+
+
+ggmap(melb_map) +
+  geom_point(data = tree_sub, 
+             aes(Longitude,
+                 Latitude),
+             colour = "#006400", 
+             alpha = 0.7, 
+             size = 0.4) +
+  geom_point(data = loc,
+             aes(longitude,
+                 latitude),
+             colour = "red", 
+             alpha = 0.7, 
+             size = 3)
+
+
+greenLeafIcon <- makeIcon(
+  iconUrl = "http://leafletjs.com/examples/custom-icons/leaf-green.png",
+  iconWidth = 20, iconHeight = 30,
+  iconAnchorX = 22, iconAnchorY = 94,
+  shadowUrl = "http://leafletjs.com/examples/custom-icons/leaf-shadow.png",
+  shadowWidth = 12, shadowHeight = 25,
+  shadowAnchorX = 4, shadowAnchorY = 62
+)
+
+
+greenLeafIcon <- makeIcon(
+  iconUrl = "http://leafletjs.com/examples/custom-icons/leaf-green.png",
+  iconWidth = 38, iconHeight = 95,
+  iconAnchorX = 22, iconAnchorY = 94,
+  shadowUrl = "http://leafletjs.com/examples/custom-icons/leaf-shadow.png",
+  shadowWidth = 50, shadowHeight = 64,
+  shadowAnchorX = 4, shadowAnchorY = 62
+)
+
+
+
+leaflet() %>% 
+  addProviderTiles("Esri") %>% 
+  addMarkers(lng = loc$longitude,
+             lat = loc$latitude,
+             popup = loc$site_id,
+  ) %>% 
+  addMarkers(lng = tree_sub$Longitude,
+             lat = tree_sub$Latitude,
+             icon = greenLeafIcon,
+             )
+
+
+#Trees lower air temperatures and humidity; they can also influence wind speed. Evaporation of water from trees, or transpiration, has a cooling effect. Cities develop “heat islands” because dark roofs and pavement absorb solar energy and radiate it back.

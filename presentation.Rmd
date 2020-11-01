@@ -504,14 +504,60 @@ xaringanExtra::use_panelset()
 .panelset[
 .panel[.panel-name[R Code]
 
-```{r panel-chunk, fig.show='hide'}
-# ... r code ...
-```
+If not the 🔥 then what ?
+
+So, although the sensors are close to each other there are some differences in the average temperatures, but they don't seem to corellate with the wind speed.
+On other hypothesis, is that the differences in temperatures might be due to clusters of trees, which also directly affect wind speed due to their size.
+
+But do we have data for the location of 🌲 in Melbourne ?
 ]
 
 .panel[.panel-name[Plot]
 
-![](README_files/figure-gfm/panel-chunk-1.png)
+```{r, echo=FALSE, fig.width=12, fig.height=10}
+tree_data0 <- read_csv("trees_raw.csv")
+
+tree_data <- tree_data0 %>% 
+  rename(Dateplanted = `Date Planted`,
+         Yearplanted = `Year Planted`) %>%  
+  mutate(Dateplanted = dmy(Dateplanted), # also make_date() produces the same result
+         Year = year(Dateplanted))           # extract the year from a date object
+
+tree_data_clean0 <- tree_data %>%
+  filter(!is.na(Dateplanted))
+
+tree_data_clean <- tree_data_clean0 %>% 
+  mutate(Year = case_when(
+    Yearplanted != year(Dateplanted) ~  Yearplanted,
+    TRUE ~ Year
+  ))
+
+tree_sub <- tree_data_clean %>% 
+  filter(Longitude > 144.96 & Longitude < 144.967,
+         Latitude > -37.804  & Latitude < -37.799)
+
+greenLeafIcon <- makeIcon(
+  iconUrl = "http://leafletjs.com/examples/custom-icons/leaf-green.png",
+  iconWidth = 20, iconHeight = 30,
+  iconAnchorX = 22, iconAnchorY = 94,
+  shadowUrl = "http://leafletjs.com/examples/custom-icons/leaf-shadow.png",
+  shadowWidth = 12, shadowHeight = 25,
+  shadowAnchorX = 4, shadowAnchorY = 62
+)
+
+
+leaflet() %>% 
+  addProviderTiles("Esri") %>% 
+  addMarkers(lng = loc$longitude,
+             lat = loc$latitude,
+             popup = loc$site_id,
+  ) %>% 
+  addMarkers(lng = tree_sub$Longitude,
+             lat = tree_sub$Latitude,
+             icon = greenLeafIcon,
+             )
+```
+
 ]
 ]
 ---
