@@ -300,7 +300,7 @@ Let's review the quality of the dataset.
 ]
 
 .panel[.panel-name[Plot]
-```{r, echo=FALSE, cache = TRUE}
+```{r, echo=FALSE, cache = TRUE, fig.height = 6, fig.width=14}
 monthly_sensors <-  sensors %>% 
   mutate(day = lubridate::ymd(as.Date(local_time)),
          month = lubridate::month(local_time),
@@ -310,9 +310,14 @@ monthly_sensors <-  sensors %>%
 
 monthly_sensors %>% 
   filter(units == "km/h") %>% 
-  ggplot(aes(x = as.factor(month), y = value, fill = site_id)) +
+  ggplot(aes(x = as.factor(month), 
+             y = value, 
+             fill = description)) +
+ # theme_classic() +
+  theme(legend.position = "bottom") +
   geom_boxplot() +
-  facet_wrap(~description)
+  facet_wrap(~description,
+             nrow=1)
 ```
 ]
 ]
@@ -320,22 +325,46 @@ monthly_sensors %>%
 ---
 ## .white[Hourly differences]
 
+.panelset[
+.panel[.panel-name[Summary]
 
-```{r, echo=FALSE}
+This plot shows the hourly difference for wind speed.
+Although it looks quite variable, it shows that the average wind speed for all locations happens around 5am. 
+
+]
+
+.panel[.panel-name[Plot]
+```{r, echo=FALSE, fig.height = 6, fig.width=14}
 monthly_sensors %>% 
   filter(units == "km/h") %>% 
-  ggplot(aes(x = as.factor(hour), y = value, fill = site_id)) +
+  ggplot(aes(x = as.factor(hour), 
+             y = value, 
+             fill = description)) +
   geom_boxplot() +
-  facet_wrap(~site_id, ncol = 2) 
+ # theme_classic() +
+  theme(legend.position = "bottom") +
+  facet_wrap(~description, nrow = 1) 
 
 ```
 
-
+]
+]
 
 ---
-## Wind Speed per Day 
+## .white[Wind Speed per Day]
 
-```{r, echo=FALSE, cache = TRUE}
+.panelset[
+.panel[.panel-name[Summary]
+
+This plot shows the days in the year when the wind speed was above average. 
+
+This figure supports the previous plot as it clearly shows December (a summer month) as having the most days with above average wind across all locations. 
+
+]
+
+.panel[.panel-name[Plot]
+
+```{r, echo=FALSE, cache = TRUE, fig.height = 6, fig.width=14}
 
 mean_wind <- sensors %>%
   filter(units == "km/h") %>%
@@ -383,7 +412,8 @@ calendR(year = 2020,
 
 ```
 
-
+]
+]
 
 ---
 class: center, inverse
@@ -410,7 +440,7 @@ class: middle center bg-main1
 # 風
 
 --
-## The Japanese word for wind
+## .blue[The Japanese word for wind]
 
 --
 
