@@ -45,6 +45,25 @@ _.left[`r Sys.Date()`]_
 .footer[`r icon::fa('book')` ETC5523:Communicating with Data]
 
 ---
+class: middle center bg-main1
+
+# Wind
+
+# 風
+
+--
+## .blue[The Japanese word for wind]
+
+--
+
+<img src="https://c4.wallpaperflare.com/wallpaper/30/379/591/anime-landscape-wallpaper-preview.jpg" width="40%">
+
+--
+
+This slide is a tribute to _Yihui Xie_ creator of __[xaringan]("https://slides.yihui.org/xaringan/#1")__
+
+
+---
 
 
 ```{r xaringan-themer, message=FALSE, warning=FALSE, include=FALSE }
@@ -115,7 +134,7 @@ xaringanExtra::use_extra_styles(
 xaringanExtra::use_tile_view()
 ```
 
-#  Are different parts of the city windier than others?   
+# When is the city windiest? Are different parts of the city windier than others?  
 
 ### .white[Yes!]
 
@@ -205,92 +224,6 @@ The sensor that is located at *the corner of Pelham and Leicester Street, Carlto
 Arc.1047
 
 ]]
----
-
-#### How is the wind speed different between sensors?
-
-```{r xaringan-panelset-1, echo=FALSE}
-xaringanExtra::use_panelset()
-```
-
-.panelset[
-.panel[.panel-name[Summary]
-
-This graph compares the average monthly wind speed for each location against the average yearly wind speed.
-
-To generate this graph we calculated the average yearly wind speed over the year for all locations, and then calculated the difference for each location and month.
-
-The insights that we drew were:
-
-The summer months are less windy and the winter months have the highest wind speeds.
-
-The Cnr of Pelham and Leicester St and 87-89 Grattan St are the windiest areas over the year as they are consistently above the yearly average wind speed.
-
-The Cnr of Swanston and Grattan has higher wind speeds in September and October
-
-The most .white[**interesting**] insight was that the wind speed varies .white[**greatly**] in Grattan St.
-
-
-
-
-
-]
-
-.panel[.panel-name[Plot]
-```{r echo = FALSE, cache = TRUE, fig.width=14, fig.height=6}
-ggplot(sensors_wind_average,
-       aes(x = month,
-           y = diff,
-           fill = description)) +
-  geom_hline(aes(yintercept = 0)) +
-  geom_bar(stat="identity",
-           position = "dodge") +
-  theme_classic() +
-  theme(legend.position = "bottom") +  
-  scale_x_continuous(breaks=seq(1, 12, 1),
-                     labels = c("1" = "Jan",
-                                   "2" = "Feb", 
-                                   "3" = "Mar", 
-                                   "4" = "Apr",
-                                   "5" = "May", 
-                                   "6" = "Jun", 
-                                   "7" = "Jul", 
-                                   "8" = "Aug", 
-                                   "9" = "Sep", 
-                                   "10" = "Oct", 
-                                   "11" = "Nov", 
-                                   "12" = "Dec")) +
-  scale_fill_discrete(name = "Locations",
-                     labels = c("141 Grattan St",
-                                "3/121 Grattan St",
-                                "87-89 Grattan St",
-                                "Cnr Pelham and Leicester St",
-                                "Cnr Swanston and Grattan St")) +
-  xlab("") +
-  ylab("Average monthly wind speed difference") +
-  ggtitle("The Average Monthly Wind Speed Difference (from the Average Wind Speed)")
-```
-]
-]
-
-
-
----
-# Can we trust the data❓
-
-<br>
-
-<blockquote>
-For our results to be mpla mpla
-<br>—Pete Styl<br>
-
-</blockquote>
-
---
-
-<br>
-
-Let's review the quality of the dataset.
 ---
 
 ## .white[Monthly differences]
@@ -416,86 +349,76 @@ calendR(year = 2020,
 ]
 
 ---
-class: center, inverse
 
-`r anicon::faa("exclamation-triangle", animate="vertical", size = 3)`
+#### How is the wind speed different between sensors?
 
-```{r}
-sensors %>% 
-  filter(units == "km/h") %>% 
-  ggplot(aes(value, group = site_id, fill = site_id )) +
-  geom_histogram(alpha = 0.4) +
-  theme_bw() 
-
+```{r xaringan-panelset-1, echo=FALSE}
+xaringanExtra::use_panelset()
 ```
 
+.panelset[
+.panel[.panel-name[Summary]
 
-`r anicon::nia("No values between 0.01 and 4", animate = "tada")`
+This graph compares the average monthly wind speed for each location against the average yearly wind speed.
 
----
-class: middle center bg-main1
+To generate this graph we calculated the average yearly wind speed over the year for all locations, and then calculated the difference for each location and month.
 
-# Wind
+The insights that we drew were:
 
-# 風
+The summer months are less windy and the winter months have the highest wind speeds.
 
---
-## .blue[The Japanese word for wind]
+The Cnr of Pelham and Leicester St and 87-89 Grattan St are the windiest areas over the year as they are consistently above the yearly average wind speed.
 
---
+The Cnr of Swanston and Grattan has higher wind speeds in September and October
 
-<img src="https://c4.wallpaperflare.com/wallpaper/30/379/591/anime-landscape-wallpaper-preview.jpg" width="40%">
-
---
-
-This slide is a tribute to _Yihui Xie_ creator of __[xaringan]("https://slides.yihui.org/xaringan/#1")__
+The most .white[**interesting**] insight was that the wind speed varies .white[**greatly**] in Grattan St.
 
 
----
-class: question middle
 
-Questions?
 
-```{r}
-xaringanExtra::use_editable()
+
+]
+
+.panel[.panel-name[Plot]
+```{r echo = FALSE, cache = TRUE, fig.width=14, fig.height=6}
+ggplot(sensors_wind_average,
+       aes(x = month,
+           y = diff,
+           fill = description)) +
+  geom_hline(aes(yintercept = 0)) +
+  geom_bar(stat="identity",
+           position = "dodge") +
+  theme_classic() +
+  theme(legend.position = "bottom") +  
+  scale_x_continuous(breaks=seq(1, 12, 1),
+                     labels = c("1" = "Jan",
+                                   "2" = "Feb", 
+                                   "3" = "Mar", 
+                                   "4" = "Apr",
+                                   "5" = "May", 
+                                   "6" = "Jun", 
+                                   "7" = "Jul", 
+                                   "8" = "Aug", 
+                                   "9" = "Sep", 
+                                   "10" = "Oct", 
+                                   "11" = "Nov", 
+                                   "12" = "Dec")) +
+  scale_fill_discrete(name = "Locations",
+                     labels = c("141 Grattan St",
+                                "3/121 Grattan St",
+                                "87-89 Grattan St",
+                                "Cnr Pelham and Leicester St",
+                                "Cnr Swanston and Grattan St")) +
+  xlab("") +
+  ylab("Average monthly wind speed difference") +
+  ggtitle("The Average Monthly Wind Speed Difference (from the Average Wind Speed)")
 ```
-
-Questions: <br>
-
-<span style="color:blue";>.can-edit[--]</span>
-
-
-`r countdown::countdown(2, class="clock", right = "30px", 
-play_sound = TRUE,
-color_border              = "blue",
-  color_text                = "blue",
-  color_running_background  = "cyan",
-  color_finished_background = "red")`
+]
+]
 
 ---
-class: split-three white center
 
-.row.bg-main1[.content.vmiddle[
-# Conclusion: What facros affect wind speed ?
-]]
-.row.bg-main2[
-.split-three[
-.column[
-]
-.column[
-# Temp, Press
-
-]
-.column[
-
-]
-]
-]
-.row.bg-main3[.content.vmiddle[
-# When there is a significand differece between them
-]]
-
----
+#### Why is the wind speed different?
 
 ```{r xaringan-panelset, echo=FALSE}
 xaringanExtra::use_panelset()
@@ -560,6 +483,88 @@ leaflet() %>%
 
 ]
 ]
+
+---
+# Can we trust the data❓
+
+<br>
+
+<blockquote>
+For our results to be mpla mpla
+<br>—Pete Styl<br>
+
+</blockquote>
+
+--
+
+<br>
+
+Let's review the quality of the dataset.
+---
+
+class: center, inverse
+
+`r anicon::faa("exclamation-triangle", animate="vertical", size = 3)`
+
+```{r}
+sensors %>% 
+  filter(units == "km/h") %>% 
+  ggplot(aes(value, group = site_id, fill = site_id )) +
+  geom_histogram(alpha = 0.4) +
+  theme_bw() 
+
+```
+
+
+`r anicon::nia("No values between 0.01 and 4", animate = "tada")`
+
+---
+
+class: split-three white center
+
+.row.bg-main1[.content.vmiddle[
+# Conclusion: What facros affect wind speed ?
+]]
+.row.bg-main2[
+.split-three[
+.column[
+]
+.column[
+# Temp, Press
+
+]
+.column[
+
+]
+]
+]
+.row.bg-main3[.content.vmiddle[
+# When there is a significand differece between them
+]]
+
+
+---
+
+class: question middle
+
+Questions?
+
+```{r}
+xaringanExtra::use_editable()
+```
+
+Questions: <br>
+
+<span style="color:blue";>.can-edit[--]</span>
+
+
+`r countdown::countdown(2, class="clock", right = "30px", 
+play_sound = TRUE,
+color_border              = "blue",
+  color_text                = "blue",
+  color_running_background  = "cyan",
+  color_finished_background = "red")`
+
 ---
 ## Find us
 
