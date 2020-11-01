@@ -5,7 +5,14 @@
     <meta charset="utf-8" />
     <meta name="author" content="Panagiotis Stylianos" />
     <meta name="author" content="Emily Sheehan" />
-    <meta name="date" content="2020-10-31" />
+    <meta name="date" content="2020-11-01" />
+    <link href="libs/remark-css/ninjutsu.css" rel="stylesheet" />
+    <link href="libs/remark-css/lucy.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-webcam/webcam.js"></script>
+    <script id="xaringanExtra-webcam-options" type="application/json">{"width":"300","height":"225","margin":"1em"}</script>
+    <script src="libs/tone/Tone.js"></script>
+    <script src="libs/slide-tone/slide-tone.js"></script>
     <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
     <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
     <script src="libs/tile-view/tile-view.js"></script>
@@ -20,21 +27,43 @@
     <script src="libs/leaflet-binding/leaflet.js"></script>
     <script src="libs/leaflet-providers/leaflet-providers_1.9.0.js"></script>
     <script src="libs/leaflet-providers-plugin/leaflet-providers-plugin.js"></script>
-    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link href="libs/font-awesome-animation/font-awesome-animation-emi.css" rel="stylesheet" />
+    <script src="libs/fontawesome/js/fontawesome-all.min.js"></script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x04e2984e48e4e38a1e8b05ce5978fad","expires":14}</script>
+    <script src="libs/himalaya/himalaya.js"></script>
+    <script src="libs/js-cookie/js.cookie.js"></script>
+    <link href="libs/editable/editable.css" rel="stylesheet" />
+    <script src="libs/editable/editable.js"></script>
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link rel="stylesheet" href="my_style.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
-class: center, middle, inverse, title-slide
 
-# Final Presentation
-## Are different parts of the city windier than others?
-### Panagiotis Stylianos
-### Emily Sheehan
-### 2020-10-31
+
+
+class: title-slide, my-one-page-font 
+
+
+
+_.left[ETC5523: Final Presentation]_
+&lt;br&gt;
+
+.left[Authors: &lt;br&gt;&lt;br&gt;
+.blue[Emily Sheehan] &lt;br&gt;&lt;br&gt;
+.blue[Panagiotis Stylianos]
+]  &lt;br&gt;
+
+_.left[2020-11-01]_
+
+
+
+.footer[<i class="fas  fa-book "></i> ETC5523:Communicating with Data]
 
 ---
-
-
 
 
 
@@ -82,28 +111,22 @@ top:1em;right:1em;
 
 
 
-
-&lt;div class="figure"&gt;
-&lt;img src="images/qr_pete.png" alt="Pete's Website" width="400" /&gt;
-&lt;p class="caption"&gt;Pete's Website&lt;/p&gt;
-&lt;/div&gt;
-
----
 #  Are different parts of the city windier than others?   
 
-Yes!
+## Yes!
 
 ![](https://media1.giphy.com/media/HmTLatwLWpTQk/giphy.gif?cid=ecf05e47155457f6vxh5f6rjvr84ipw53d5vi22i8kvu72dx&amp;rid=giphy.gif)&lt;!-- --&gt;
 
-
+.footer[<i class="fas  fa-book "></i> ETC5523:Communicating with Data]
 ---
-class: inverse, center, middle
+class: inverse, center, middle, split-two with-thick-border border-green
 
-#  The Locations
-
+.column.bg-main1[
 <div id="htmlwidget-7b7de0bb90147fb91769" style="width:504px;height:504px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-7b7de0bb90147fb91769">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[-37.800524,-37.8023,-37.800629,-37.800575,-37.800793],[144.964122,144.960923,144.965052,144.964635,144.966492],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["arc1046","arc1047","arc1050","arc1048","arc1045"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-37.8023,-37.800524],"lng":[144.960923,144.966492]}},"evals":[],"jsHooks":[]}</script>
+]
 
+.column.bg-main1[
 The locations are:
 
 * 141 Grattan St, Carlton
@@ -111,17 +134,197 @@ The locations are:
 * 87-89 Grattan St
 * Cnr Pelham and Leicester St
 * Cnr Swanston and Grattan St
+]
+---
+class: split-three with-thick-border border-green
 
+
+# View
+
+.column.bg-main1[.content[
+
+### .green[Arc1043, Arc1048, Arc1050]
+&lt;br&gt;
+&lt;center&gt;
+&lt;img class="border-box" src="https://i1.au.reastatic.net/768x512-smart=75,r=33,g=40,b=46,quality=60,progressive/acd0a8aa867bac0b555c01d972e4b10633f4f791444107425f2c691a0b05dacb/image0.jpg" width = "200px"&gt;
+&lt;/center&gt;
+&lt;br&gt;
+
+*Three of the sensors are located in:*
+
+*Grattan Street Carlton*
+
+]]
+
+.column.bg-main1[.content[
+
+### Arc.1046
+
+&lt;br&gt;
+&lt;center&gt;
+&lt;img class="border-box" src="https://i2.au.reastatic.net/800x600/a487bda2e0d2c2761726a10a4eb376eea12fe2165b226dc8cff2b99c97612fc7/image.jpg" width = "200px"&gt;
+&lt;/center&gt;
+&lt;br&gt;&lt;br&gt;
+
+*One sensors is located in:*
+
+*Corner of Swanston and Grattan Streets, Carlton*
+
+]]
+
+.column.bg-main1[.content[
+
+### Arc.1047
+
+&lt;br&gt;
+&lt;center&gt;
+&lt;img class="border-box" src="https://www.commo.com.au/sites/default/files/styles/front_left_column/public/carltonpellhamst147155dronedji_0063_002.jpg?itok=ZrZPS3JQ" width = "200px"&gt;
+&lt;/center&gt;
+&lt;br&gt;
+
+*.yellow[One sensors is located in:]*
+
+*Corner of Pelham and Leicester Streets, Carlton*
+
+]]
 ---
 
 ####  How is the wind speed different or similar in different parts of the city?
 
-![](presentation_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+![](presentation_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
 
 This graph compares the average monthly wind speed for each location against the average yearly wind speed.
 
 
 ---
+# Can we trust the data ❓
+
+&lt;br&gt;
+
+&lt;blockquote&gt;
+For our results to be mpla mpla
+&lt;br&gt;—Pete Styl&lt;br&gt;
+
+&lt;/blockquote&gt;
+
+--
+
+&lt;br&gt;
+
+Let's review potential indicators of miss-readings 
+---
+
+## Monthly differences
+![](presentation_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+---
+## Hourly differences
+
+
+![](presentation_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+
+
+---
+## Wind Speed per Day 
+
+![](presentation_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+
+
+---
+class: center, inverse
+
+<span>&lt;i class="fas  fa-exclamation-triangle fa-3x faa-vertical animated "&gt;&lt;/i&gt;</span>
+
+![](presentation_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+
+<span class=" faa-tada animated " style=" display: -moz-inline-stack; display: inline-block; transform: rotate(0deg);">No values between 0.01 and 4</span>
+
+---
+class: middle center bg-main1
+
+# Wind
+
+# 風
+
+--
+## The Japanese word for wind
+
+--
+
+&lt;img src="https://c4.wallpaperflare.com/wallpaper/30/379/591/anime-landscape-wallpaper-preview.jpg" width="40%"&gt;
+
+--
+
+This slide is a tribute to _Yihui Xie_ creator of __[xaringan]("https://slides.yihui.org/xaringan/#1")__
+
+
+---
+class: question middle
+
+Questions?
+
+
+
+Questions: &lt;br&gt;
+
+&lt;span style="color:blue";&gt;.can-edit[--]&lt;/span&gt;
+
+
+<div class="countdown clock" id="timer_5f9dffa7" style="right:30px;bottom:0;" data-audio="true" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+class: split-three white center
+
+.row.bg-main1[.content.vmiddle[
+# Conclusion: What facros affect wind speed ?
+]]
+.row.bg-main2[
+.split-three[
+.column[
+]
+.column[
+# Temp, Press
+
+]
+.column[
+
+]
+]
+]
+.row.bg-main3[.content.vmiddle[
+# When there is a significand differece between them
+]]
+
+---
+
+
+
+.panelset[
+.panel[.panel-name[R Code]
+
+
+]
+
+.panel[.panel-name[Plot]
+
+![](README_files/figure-gfm/panel-chunk-1.png)
+]
+]
+---
+## Find us
+
+&lt;div class="figure"&gt;
+&lt;img src="images/qr_pete.png" alt="Pete's Website" width="400" /&gt;
+&lt;p class="caption"&gt;Pete's Website&lt;/p&gt;
+&lt;/div&gt;
+
+---
+## How did you find our presentation ?
 <iframe src="https://pollev.com/petestyliano835"width="100%" height="100%"  frameBorder="0"></iframe>
 
 ---
@@ -132,8 +335,12 @@ This graph compares the average monthly wind speed for each location against the
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
+"highlightLanguage": "r",
 "highlightLines": true,
-"countIncrementalSlides": false
+"highlightSpans": false,
+"countIncrementalSlides": false,
+"slideNumberFormat": "%current%/%total%",
+"ratio": "16:9"
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
@@ -217,6 +424,24 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
+<script>
+  (function() {
+    var divHTML = document.querySelectorAll(".details-open");
+    divHTML.forEach(function (el) {
+      var preNodes = el.getElementsByTagName("pre");
+      var outputNode = preNodes[1];
+      outputNode.outerHTML = "<details open class='output'><summary>Output</summary>" + outputNode.outerHTML + "</details>";
+    })
+  })();
+(function() {
+  var divHTML = document.querySelectorAll(".details");
+  divHTML.forEach(function (el) {
+    var preNodes = el.getElementsByTagName("pre");
+    var outputNode = preNodes[1];
+    outputNode.outerHTML = "<details class='output'><summary>Output</summary>" + outputNode.outerHTML + "</details>";
+  })
+})();
+</script>
 
 <script>
 slideshow._releaseMath = function(el) {

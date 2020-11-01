@@ -24,7 +24,7 @@ output:
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-knitr::opts_chunk$set(message=FALSE, warning=FALSE, echo=FALSE)
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, echo=FALSE, cache = TRUE)
 ```
 class: title-slide, my-one-page-font 
 
@@ -34,8 +34,8 @@ _.left[ETC5523: Final Presentation]_
 <br>
 
 .left[Authors: <br><br>
-.orange[Emily Sheehan] <br><br>
-.orange[Panagiotis Stylianos]
+.blue[Emily Sheehan] <br><br>
+.blue[Panagiotis Stylianos]
 ]  <br>
 
 _.left[`r Sys.Date()`]_
@@ -117,15 +117,15 @@ xaringanExtra::use_tile_view()
 
 #  Are different parts of the city windier than others?   
 
-Yes!
+## Yes!
 
 ```{r echo=FALSE}
 knitr::include_graphics("https://media1.giphy.com/media/HmTLatwLWpTQk/giphy.gif?cid=ecf05e47155457f6vxh5f6rjvr84ipw53d5vi22i8kvu72dx&rid=giphy.gif") #<<
 ```
+
+.footer[`r icon::fa('book')` ETC5523:Communicating with Data]
 ---
 class: inverse, center, middle, split-two with-thick-border border-green
-
-#  The Locations
 
 .column.bg-main1[
 ```{r map, echo=FALSE}
@@ -202,7 +202,7 @@ class: split-three with-thick-border border-green
 
 ####  How is the wind speed different or similar in different parts of the city?
 
-```{r echo = FALSE}
+```{r echo = FALSE, cache = TRUE}
 ggplot(sensors_wind_average,
        aes(x = month,
            y = diff,
@@ -258,7 +258,7 @@ Let's review potential indicators of miss-readings
 ---
 
 ## Monthly differences
-```{r, echo=FALSE}
+```{r, echo=FALSE, cache = TRUE}
 monthly_sensors <-  sensors %>% 
   mutate(day = lubridate::ymd(as.Date(local_time)),
          month = lubridate::month(local_time),
@@ -291,7 +291,7 @@ monthly_sensors %>%
 ---
 ## Wind Speed per Day 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, cache = TRUE}
 
 mean_wind <- sensors %>%
   filter(units == "km/h") %>%

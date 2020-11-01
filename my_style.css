@@ -8,4 +8,10 @@
 .my-one-page-font {
   font-size: 34px;
   color:white;
-}z
+  font-family: avenir;
+}
+
+.remark-slide-content {
+    font-family: avenir;
+    background-color: #575757;
+}
