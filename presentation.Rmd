@@ -365,7 +365,7 @@ monthly_sensors %>%
     subtitle = 
       "Notice that the wind speed peaks between 1pm and 2pm for all locations.<br><br>
     The readings of the <span style='color:blue'>blue</span> and
-     <span style='color:darkgreen'>green</span have measured wind speeds of 0 km/h, which might be an indicator of sensors inability to accurately measure soft winds",
+     <span style='color:darkgreen'>green</span> have measured wind speeds of 0 km/h, which might be an indicator of sensors inability to accurately measure soft winds.",
     caption = "Data from City of Melbourne Open Data-Microclimate Sensor Readings") 
 
 
