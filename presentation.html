@@ -6,8 +6,11 @@
     <meta name="author" content="Panagiotis Stylianos" />
     <meta name="author" content="Emily Sheehan" />
     <meta name="date" content="2020-11-02" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/ninjutsu.css" rel="stylesheet" />
     <link href="libs/remark-css/lucy.css" rel="stylesheet" />
+    <link href="libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+    <script src="libs/anchor-sections/anchor-sections.js"></script>
     <link href="libs/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
     <script src="libs/xaringanExtra-webcam/webcam.js"></script>
     <script id="xaringanExtra-webcam-options" type="application/json">{"width":"300","height":"225","margin":"1em"}</script>
@@ -31,7 +34,7 @@
     <script src="libs/panelset/panelset.js"></script>
     <link href="libs/font-awesome-animation/font-awesome-animation-emi.css" rel="stylesheet" />
     <script src="libs/fontawesome/js/fontawesome-all.min.js"></script>
-    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x9170b090a3e4602b3b2058003902192","expires":14}</script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"ccaddbef93fa4d2b8fa1156206d4d295","expires":14}</script>
     <script src="libs/himalaya/himalaya.js"></script>
     <script src="libs/js-cookie/js.cookie.js"></script>
     <link href="libs/editable/editable.css" rel="stylesheet" />
@@ -212,7 +215,7 @@ This plot shows the monthly difference for wind speed.
 ]
 
 .panel[.panel-name[Plot]
-![](presentation_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+&lt;img src="presentation_files/figure-html/unnamed-chunk-2-1.png" width="1008" /&gt;
 ]
 ]
 
@@ -229,7 +232,7 @@ This plot shows the hourly difference for wind speed.
 ]
 
 .panel[.panel-name[Plot]
-![](presentation_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+&lt;img src="presentation_files/figure-html/unnamed-chunk-3-1.png" width="1008" /&gt;
 
 ]
 ]
@@ -250,7 +253,7 @@ This plot shows the days in the year when the wind speed was above average.
 
 .panel[.panel-name[Plot]
 
-![](presentation_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+&lt;img src="presentation_files/figure-html/unnamed-chunk-4-1.png" width="1008" /&gt;
 
 ]
 ]
@@ -291,7 +294,7 @@ This graph compares the average monthly wind speed for each location against the
 ]
 
 .panel[.panel-name[Plot]
-![](presentation_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+&lt;img src="presentation_files/figure-html/unnamed-chunk-5-1.png" width="1008" /&gt;
 ]
 ]
 
@@ -308,6 +311,7 @@ So if wind speed is not impacted by 🔥  then what?
 
 We think the wind speed might be impacted by the location of 🌲  and buildings around Melbourne. 
 
+To investigate our hypothesis we used data from [City of Melbourne Open Data-Urban Forest](https://data.melbourne.vic.gov.au/Environment/Trees-with-species-and-dimensions-Urban-Forest-/fp38-wiyy)
 
 .footer[<i class="fas  fa-book "></i> ETC5523:Communicating with Data]
 
@@ -341,7 +345,7 @@ Notice from the map:
 ]
 
 ---
-class: center, inverse
+class: center inverse
 ### .black[Can we trust the data]❓
 --
 
@@ -351,7 +355,7 @@ Let's review the quality of the dataset.
 
 <span>&lt;i class="fas  fa-exclamation-triangle fa-2x faa-vertical animated "&gt;&lt;/i&gt;</span>
 
-![](presentation_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+&lt;img src="presentation_files/figure-html/unnamed-chunk-7-1.png" width="1008" /&gt;
 
 
 <span class=" faa-tada animated " style=" display: -moz-inline-stack; display: inline-block; transform: rotate(0deg);">No values between 0.01 and 4</span>
@@ -372,41 +376,45 @@ class: split-two white center
 
 #### The wind speed is above average for all locations in December.
 
-#### 87-89 Grattan St and the Cnr of Leicester and Pelham St have an above average wind speed, comparative to other locations
+#### 87-89 Grattan St and the Cnr of Leicester and Pelham St have an above average wind speed, comparative to other locations.
 
 #### 87-89 Grattan St and the Cnr of Leicester and Pelham St have less trees than the three sensors clustered together.
 
 ]
 ]
 ]
-
-
 ---
+class: inverse, question, middle
 
-class: question middle
-
-# Questions
-
+# Questions 
 
 
- &lt;br&gt;
 
 &lt;span style="color:blue";&gt;.can-edit[--]&lt;/span&gt;
 
+.right[
+&lt;img src="presentation_files/figure-html/unnamed-chunk-9-1.png" width="144" /&gt;
+]
+&lt;br&gt;
 
-<div class="countdown clock" id="timer_5f9f7f79" style="right:30px;bottom:0;" data-audio="true" data-warnwhen="0">
+<div class="countdown clock" id="timer_5f9fb11e" style="right:30px;bottom:0;" data-audio="true" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 ---
+
+
+
 # Thank you!
 
-## .white[Find us]
+## .white[Find us:]
 
 &lt;div class="figure"&gt;
 &lt;img src="images/qr_pete.png" alt="Pete's Website" width="400" /&gt;
 &lt;p class="caption"&gt;Pete's Website&lt;/p&gt;
 &lt;/div&gt;
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

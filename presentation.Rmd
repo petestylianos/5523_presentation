@@ -54,6 +54,7 @@ library(anicon)
 library("countdown")
 library(calendR)
 library(lubridate)
+library(ggtext)
 
 style_duo_accent(
   primary_color = "#1381B0",
@@ -223,7 +224,7 @@ This plot shows the monthly difference for wind speed.
 ]
 
 .panel[.panel-name[Plot]
-```{r, echo=FALSE, cache = TRUE, fig.height = 6, fig.width=14}
+```{r, echo=FALSE, cache = TRUE, fig.height = 6, fig.width=14, fig.retina=3}
 monthly_sensors <-  sensors %>% 
   mutate(day = lubridate::ymd(as.Date(local_time)),
          month = lubridate::month(local_time),
@@ -236,11 +237,60 @@ monthly_sensors %>%
   ggplot(aes(x = as.factor(month), 
              y = value, 
              fill = description)) +
- # theme_classic() +
-  theme(legend.position = "bottom") +
+  ggthemes::theme_solarized() +
+  theme(legend.position = "bottom",
+        legend.title =  element_blank(),
+        legend.box.background = element_blank(),
+        strip.text.x = element_blank(),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        plot.subtitle = ggtext::element_markdown(),
+        plot.caption = ggtext::element_markdown(),
+        axis.title.y = ggtext::element_textbox_simple(
+          size = 13,
+          width = NULL,
+          orientation = "left-rotated",
+          padding = margin(4, 4, 4, 4),
+          margin = margin(4, 0, 0, 0),
+          linetype = 1,
+          r = grid::unit(8, "pt"),
+          fill = "azure1",
+        ),
+        axis.title.x = ggtext::element_textbox_simple(
+          size = 13,
+          width = NULL,
+          padding = margin(4, 4, 4, 4),
+          margin = margin(4, 0, 0, 0),
+          linetype = 1,
+          r = grid::unit(8, "pt"),
+          fill = "azure1",
+        ),
+        plot.title  = ggtext::element_textbox_simple(
+          size = 13,
+          width = NULL,
+          padding = margin(4, 4, 4, 4),
+          margin = margin(4, 0, 10, 0),
+          linetype = 1,
+          r = grid::unit(8, "pt"),
+          fill = "azure1",
+        ),
+        legend.key = element_rect(fill = "transparent", colour = "transparent")) +
   geom_boxplot() +
   facet_wrap(~description,
-             nrow=1)
+             nrow=1) +
+  ggthemes::scale_fill_colorblind() +
+  guides(fill=guide_legend(nrow=2, byrow=TRUE)) +
+  labs(
+    x = "Month",
+    y = "Wind Speed",
+    title = "Distribution of Wind Speed by Month",
+    subtitle = 
+    "Notice that the readings of the <span style='color:blue'>blue</span> and
+     <span style='color:darkgreen'>green</span>
+    sensors vary significantly from the rest.<br><br>
+    Overall the wind speed tends to be highest around the summer months.",
+   caption = "Data from City of Melbourne Open Data-Microclimate Sensor Readings"
+    ) 
 ```
 ]
 ]
@@ -258,16 +308,66 @@ This plot shows the hourly difference for wind speed.
 ]
 
 .panel[.panel-name[Plot]
-```{r, echo=FALSE, fig.height = 6, fig.width=14}
+```{r, echo=FALSE, fig.height = 6, fig.width=14, fig.retina=3}
 monthly_sensors %>% 
   filter(units == "km/h") %>% 
-  ggplot(aes(x = as.factor(hour), 
-             y = value, 
-             fill = description)) +
+  ggplot(aes(x = as.factor(hour), y = value,  fill = description)) +
   geom_boxplot() +
- # theme_classic() +
-  theme(legend.position = "bottom") +
-  facet_wrap(~description, nrow = 1) 
+  facet_wrap(~site_id, ncol = 2) +
+  ggthemes::theme_solarized() +
+  theme(legend.position = "bottom",
+        legend.title =  element_blank(),
+        legend.box.background = element_blank(),
+        strip.text.x = element_blank(),
+        axis.text.x = element_text(size = 5),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        plot.subtitle = ggtext::element_markdown(),
+        plot.caption = ggtext::element_markdown(),
+        axis.title.y = ggtext::element_textbox_simple(
+          size = 13,
+          width = NULL,
+          orientation = "left-rotated",
+          padding = margin(4, 4, 4, 4),
+          margin = margin(4, 0, 0, 0),
+          linetype = 1,
+          r = grid::unit(8, "pt"),
+          fill = "azure1",
+        ),
+        axis.title.x = ggtext::element_textbox_simple(
+          size = 13,
+          width = NULL,
+          padding = margin(4, 4, 4, 4),
+          margin = margin(4, 0, 0, 0),
+          linetype = 1,
+          r = grid::unit(8, "pt"),
+          fill = "azure1",
+        ),
+        plot.title  = ggtext::element_textbox_simple(
+          size = 13,
+          width = NULL,
+          padding = margin(4, 4, 4, 4),
+          margin = margin(4, 0, 10, 0),
+          linetype = 1,
+          r = grid::unit(8, "pt"),
+          fill = "azure1",
+        ),
+        legend.key = element_rect(fill = "transparent", colour = "transparent")) +
+  geom_boxplot() +
+  facet_wrap(~description,
+             nrow=1) +
+  ggthemes::scale_fill_colorblind() +
+  guides(fill=guide_legend(nrow=2, byrow=TRUE)) +
+  labs(
+    x = "Hour",
+    y = "Wind Speed",
+    title = "Distribution of Wind Speed by Hour",
+    subtitle = 
+      "Notice that the wind speed peaks between 1pm and 2pm for all locations.<br><br>
+    The readings of the <span style='color:blue'>blue</span> and
+     <span style='color:darkgreen'>green</span have measured wind speeds of 0 km/h, which might be an indicator of sensors inability to accurately measure soft winds",
+    caption = "Data from City of Melbourne Open Data-Microclimate Sensor Readings") 
+
 
 ```
 
@@ -290,7 +390,7 @@ This plot shows the days in the year when the wind speed was above average.
 
 .panel[.panel-name[Plot]
 
-```{r, echo=FALSE, cache = TRUE, fig.height = 6, fig.width=14}
+```{r, echo=FALSE, cache = TRUE, fig.height = 6, fig.width=14, fig.retina=3}
 
 mean_wind <- sensors %>%
   filter(units == "km/h") %>%
@@ -319,22 +419,45 @@ wind_by_day <-   monthly_sensors %>%
 calendR(year = 2020,
         start = "M",
         special.days = wind_by_day$cal_day,
-        special.col = "green",            # Color of the specified days
-        low.col = "white",
+        special.col = "lightblue",            # Color of the specified days
+        low.col = "cornsilk",
+        col = "black",
         weeknames.size = 3,
+        months.size = 7,
+        months.col = "black",
         day.size = 2,
         orientation ="p",
+        bg.col = "grey90",
         title = "",
         subtitle = "") +
-  tvthemes::theme_avatar() +
-  theme(
-    legend.position = "none"
-  ) +
+  theme(legend.position = "none",
+        legend.title =  element_blank(),
+        legend.box.background = element_blank(),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        plot.title.position = "plot",
+        plot.subtitle = ggtext::element_markdown(
+          size = 12,
+        ),
+        plot.title  = ggtext::element_textbox_simple(
+          size = 15,
+          width = NULL,
+          padding = margin(4, 4, 4, 4),
+          margin = margin(4, 0, 10, 0),
+          linetype = 1,
+          r = grid::unit(8, "pt"),
+          fill = "azure1",
+        ),
+        legend.key = element_rect(fill = "transparent", colour = "transparent")) +
   labs(
-    title = "Days with above average wind speed"
-  )
-
-
+    y = "",
+    x = "",
+    title = "Days with __above__ average wind speeds",
+    subtitle = 
+      "Notice that the majority of days that experienced above average wind speeds
+    is during <span style='color:purple'>summer</span>, which indicates that  
+    the increase in temperature might produce stronger winds"
+    ) 
 
 ```
 
@@ -379,7 +502,7 @@ This graph compares the average monthly wind speed for each location against the
 ]
 
 .panel[.panel-name[Plot]
-```{r echo = FALSE, cache = TRUE, fig.width=14, fig.height=6}
+```{r echo = FALSE, cache = TRUE, fig.width=14, fig.height=5, fig.retina=3}
 ggplot(sensors_wind_average,
        aes(x = month,
            y = diff,
@@ -402,15 +525,51 @@ ggplot(sensors_wind_average,
                                    "10" = "Oct", 
                                    "11" = "Nov", 
                                    "12" = "Dec")) +
-  scale_fill_discrete(name = "Locations",
-                     labels = c("141 Grattan St",
-                                "3/121 Grattan St",
-                                "87-89 Grattan St",
-                                "Cnr Pelham and Leicester St",
-                                "Cnr Swanston and Grattan St")) +
-  xlab("") +
-  ylab("Average monthly wind speed difference") +
-  ggtitle("The Average Monthly Wind Speed Difference (from the Average Wind Speed)")
+  ggtitle("The Average Monthly Wind Speed Difference (from the Average Wind Speed)") +
+  ggthemes::theme_solarized() +
+  theme(legend.position = "bottom",
+        legend.title =  element_blank(),
+        legend.box.background = element_blank(),
+        strip.text.x = element_blank(),
+        axis.text.x = element_text(size = 5),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        plot.subtitle = ggtext::element_markdown(),
+        plot.caption = ggtext::element_markdown(),
+        axis.title.y = ggtext::element_textbox_simple(
+          size = 13,
+          width = NULL,
+          orientation = "left-rotated",
+          padding = margin(4, 4, 4, 4),
+          margin = margin(4, 0, 0, 0),
+          linetype = 1,
+          r = grid::unit(8, "pt"),
+          fill = "azure1",
+        ),
+        axis.title.x = ggtext::element_textbox_simple(
+          size = 13,
+          width = NULL,
+          padding = margin(4, 4, 4, 4),
+          margin = margin(4, 0, 0, 0),
+          linetype = 1,
+          r = grid::unit(8, "pt"),
+          fill = "azure1",
+        ),
+        plot.title  = ggtext::element_textbox_simple(
+          size = 13,
+          width = NULL,
+          padding = margin(4, 4, 4, 4),
+          margin = margin(4, 0, 10, 0),
+          linetype = 1,
+          r = grid::unit(8, "pt"),
+          fill = "azure1",
+        ),
+        legend.key = element_rect(fill = "transparent", colour = "transparent")) +  ggthemes::scale_fill_colorblind() +
+  guides(fill=guide_legend(nrow=2, byrow=TRUE)) +
+  labs(
+    x = "",
+    y = "Average monthly wind speed difference"
+  )
 ```
 ]
 ]
@@ -428,6 +587,7 @@ So if wind speed is not impacted by 🔥  then what?
 
 We think the wind speed might be impacted by the location of 🌲  and buildings around Melbourne. 
 
+To investigate our hypothesis we used data from [City of Melbourne Open Data-Urban Forest](https://data.melbourne.vic.gov.au/Environment/Trees-with-species-and-dimensions-Urban-Forest-/fp38-wiyy)
 
 .footer[`r icon::fa('book')` ETC5523:Communicating with Data]
 
@@ -478,7 +638,7 @@ tree_sub <- tree_data_clean %>%
   filter(Longitude > 144.96 & Longitude < 144.967,
          Latitude > -37.804  & Latitude < -37.799)
 
-greenLeafIcon <- makeIcon(
+ greenLeafIcon <- makeIcon(
   iconUrl = "http://leafletjs.com/examples/custom-icons/leaf-green.png",
   iconWidth = 20, iconHeight = 30,
   iconAnchorX = 22, iconAnchorY = 94,
@@ -504,7 +664,7 @@ leaflet() %>%
 ]
 
 ---
-class: center, inverse
+class: center inverse
 ### .black[Can we trust the data]❓
 --
 
@@ -514,12 +674,60 @@ Let's review the quality of the dataset.
 
 `r anicon::faa("exclamation-triangle", animate="vertical", size = 2)`
 
-```{r fig.height=5, fig.width = 6}
+```{r fig.height=6, fig.width = 14, fig.retina=3}
 sensors %>% 
   filter(units == "km/h") %>% 
-  ggplot(aes(value, group = site_id, fill = site_id )) +
-  geom_histogram(alpha = 0.4) +
-  theme_bw() 
+  ggplot(aes(value, group = site_id, fill = description )) +
+  geom_histogram(alpha = 0.4)  + 
+  ggthemes::theme_solarized() +
+  theme(legend.position = "bottom",
+        legend.title =  element_blank(),
+        legend.box.background = element_blank(),
+        strip.text.x = element_blank(),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        plot.subtitle = ggtext::element_markdown(),
+        axis.title.y = ggtext::element_textbox_simple(
+          size = 13,
+          width = NULL,
+          orientation = "left-rotated",
+          padding = margin(4, 4, 4, 4),
+          margin = margin(4, 0, 0, 0),
+          linetype = 1,
+          r = grid::unit(8, "pt"),
+          fill = "azure1",
+        ),
+        axis.title.x = ggtext::element_textbox_simple(
+          size = 13,
+          width = NULL,
+          padding = margin(4, 4, 4, 4),
+          margin = margin(4, 0, 0, 0),
+          linetype = 1,
+          r = grid::unit(8, "pt"),
+          fill = "azure1",
+        ),
+        plot.title  = ggtext::element_textbox_simple(
+          size = 13,
+          width = NULL,
+          padding = margin(4, 4, 4, 4),
+          margin = margin(4, 0, 10, 0),
+          linetype = 1,
+          r = grid::unit(8, "pt"),
+          fill = "azure1",
+        ),
+        legend.key = element_rect(fill = "transparent", colour = "transparent")) +
+  ggthemes::scale_fill_colorblind() +
+  guides(fill=guide_legend(nrow=2, byrow=TRUE)) +
+  labs(
+    x = "Wind Speed",
+    y = "Count",
+    title = "Distribution of Wind Speed Measurements",
+    subtitle = 
+      "Notice that there are <span style='color:red'>no observations</span> between 0.1 and 4. <br><br>
+    Also, notice the large count of measurements for a wind speed of __zero__,
+    which might be an indicator of the sensors being unable to detect soft winds"
+  ) 
+
 
 ```
 
@@ -542,29 +750,33 @@ class: split-two white center
 
 #### The wind speed is above average for all locations in December.
 
-#### 87-89 Grattan St and the Cnr of Leicester and Pelham St have an above average wind speed, comparative to other locations
+#### 87-89 Grattan St and the Cnr of Leicester and Pelham St have an above average wind speed, comparative to other locations.
 
 #### 87-89 Grattan St and the Cnr of Leicester and Pelham St have less trees than the three sensors clustered together.
 
 ]
 ]
 ]
-
-
 ---
+class: inverse, question, middle
 
-class: question middle
+# Questions 
 
-# Questions
-
-```{r}
+```{r, echo=FALSE}
 xaringanExtra::use_editable()
 ```
 
- <br>
-
 <span style="color:blue";>.can-edit[--]</span>
 
+.right[
+```{r, warning=FALSE, message=FALSE, error=FALSE, echo=FALSE, fig.height=2, fig.width=2, fig.retina=3}
+library(RBitmoji)
+set.seed(10)
+plot_comic("b0f43c83-b6a4-4e2f-90b4-b100a31cd696-v1", tag = "question", 
+           transparent = TRUE)
+```
+]
+<br>
 
 `r countdown::countdown(2, class="clock", right = "30px", 
 play_sound = TRUE,
@@ -574,9 +786,12 @@ color_border              = "blue",
   color_finished_background = "red")`
 
 ---
+
+
+
 # Thank you!
 
-## .white[Find us]
+## .white[Find us:]
 
 ```{r, fig.cap="Pete's Website", echo=FALSE}
 knitr::include_graphics("images/qr_pete.png") #<<
