@@ -124,7 +124,7 @@ leaflet(loc) %>%
 ]
 
 .column.bg-main1[
-### .white[**The location of the five sensors are:**]
+### .white[**Sensors Location:**]
 
 ### .white[141 Grattan St, Carlton] <br>
 ### .white[3/121 Grattan St, Carlton] <br>
@@ -741,7 +741,6 @@ class: split-two white center
 # Conclusion
 ]]
 .row.bg-main2[
-.split-two[
 .column.middle[
 
 #### The city is the windiest in the summer months. 
@@ -756,7 +755,7 @@ class: split-two white center
 
 ]
 ]
-]
+
 ---
 class: inverse, question, middle
 
@@ -786,15 +785,21 @@ color_border              = "blue",
   color_finished_background = "red")`
 
 ---
-
-
-
+class: split-two with-thick-border border-green
+.left[
 # Thank you!
-
-## .white[Find us:]
-
+## .green[Find us on:]
+]
+Emily's Website
+.column.bg-main1[.content[
 ```{r, fig.cap="Pete's Website", echo=FALSE}
+knitr::include_graphics("images/qr_em.png") #<<
+```
+]]
+.column.bg-main1[.content[
+
+```{r, echo=FALSE}
 knitr::include_graphics("images/qr_pete.png") #<<
 ```
-
+]]
 
