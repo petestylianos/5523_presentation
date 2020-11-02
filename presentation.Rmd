@@ -527,16 +527,15 @@ sensors %>%
 `r anicon::nia("No values between 0.01 and 4", animate = "tada")`
 ---
 
-class: split-three white center
+class: split-two white center
 
 .row.bg-main1[.content.vmiddle[
 # Conclusion
 ]]
 .row.bg-main2[
-.split-three[
-.column[
-]
-.column[
+.split-two[
+.column.middle[
+
 #### The city is the windiest in the summer months. 
 
 #### Wind speed typically reaches its highest point between 1-2pm.
@@ -548,14 +547,8 @@ class: split-three white center
 #### 87-89 Grattan St and the Cnr of Leicester and Pelham St have less trees than the three sensors clustered together.
 
 ]
-.column[
-
 ]
 ]
-]
-.row.bg-main3[.content.vmiddle[
-
-]]
 
 
 ---
