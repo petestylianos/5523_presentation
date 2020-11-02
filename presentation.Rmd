@@ -35,24 +35,12 @@ class: title-slide, my-one-page-font
 # 風
 
 
-
 .left[Authors: <br>
 .green[Emily Sheehan] <br>
 .green[Panagiotis Stylianos]
-]  <br>
+] <br>
 
-_.left[`r Sys.Date()`]_
-
-
-
-.footer[`r icon::fa('book')` ETC5523:Communicating with Data]
----
-class: middle center bg-main1
-
-# Wind
-
-# 風
-
+.left[`r Sys.Date()`]
 
 .footer[`r icon::fa('book')` ETC5523:Communicating with Data]
 
@@ -74,7 +62,6 @@ style_duo_accent(
 )
 ```
 
-
 ```{r load-data}
 loc <- read_csv("data/locations.csv") %>% 
   select(c(site_id, description, latitude, longitude)) %>% 
@@ -84,7 +71,6 @@ readings <- read_csv("data/readings.csv")  %>%
 sensors <- readings %>% 
   left_join(loc, by = "site_id") 
 ```
-
 
 ```{r wrangling-data, cache = TRUE}
 sensors_wind <- sensors %>%
@@ -106,7 +92,6 @@ sensors_wind_average <-
   mutate(diff = (average - average_value),
          diff = round(diff,2))
 ```
-
 
 ```{r xaringan-logo}
 xaringanExtra::use_logo(
@@ -432,6 +417,22 @@ ggplot(sensors_wind_average,
 
 ---
 
+## .white[**Why?**]
+
+
+--
+
+Since the sensors are so close, it is unlikely that wind speed would be affected by temperature. 
+
+So if wind speed is not impacted by 🔥  then what?
+
+We think the wind speed might be impacted by the location of 🌲  and buildings around Melbourne. 
+
+
+.footer[`r icon::fa('book')` ETC5523:Communicating with Data]
+
+---
+
 ## .white[Why is the wind speed different?]
 
 ```{r xaringan-panelset, echo=FALSE}
@@ -439,14 +440,10 @@ xaringanExtra::use_panelset()
 ```
 
 .panelset[
-.panel[.panel-name[R Code]
+.panel[.panel-name[Summary]
 
-If not the 🔥 then what ?
 
-So, although the sensors are close to each other there are some differences in the average temperatures, but they don't seem to corellate with the wind speed.
-On other hypothesis, is that the differences in temperatures might be due to clusters of trees, which also directly affect wind speed due to their size.
 
-But do we have data for the location of 🌲 in Melbourne ?
 ]
 
 .panel[.panel-name[Plot]
@@ -500,13 +497,16 @@ leaflet() %>%
 
 ---
 class: center, inverse
-# Can we trust the data❓
+### .black[Can we trust the data]❓
+--
 
 Let's review the quality of the dataset.
 
-`r anicon::faa("exclamation-triangle", animate="vertical", size = 3)`
+--
 
-```{r}
+`r anicon::faa("exclamation-triangle", animate="vertical", size = 2)`
+
+```{r fig.height=5, fig.width = 6}
 sensors %>% 
   filter(units == "km/h") %>% 
   ggplot(aes(value, group = site_id, fill = site_id )) +
