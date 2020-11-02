@@ -442,7 +442,15 @@ xaringanExtra::use_panelset()
 .panelset[
 .panel[.panel-name[Summary]
 
+As previously shown:
 
+> 87-89 Grattan St and the Cnr of Pelham and Leiscester St are windier than the other spots
+
+Notice from the map:
+
+> The other spots are clustered together and sit in between two parks with lots of trees which could explain the lower wind speed.
+
+> 87-89 Grattan St and the Cnr of Pelham and Leiscester St have higher wind speeds and are relatively unprotected.  
 
 ]
 
@@ -484,7 +492,7 @@ leaflet() %>%
   addProviderTiles("Esri") %>% 
   addMarkers(lng = loc$longitude,
              lat = loc$latitude,
-             popup = loc$site_id,
+             popup = loc$description,
   ) %>% 
   addMarkers(lng = tree_sub$Longitude,
              lat = tree_sub$Latitude,
@@ -522,14 +530,22 @@ sensors %>%
 class: split-three white center
 
 .row.bg-main1[.content.vmiddle[
-# Conclusion: What facros affect wind speed ?
+# Conclusion
 ]]
 .row.bg-main2[
 .split-three[
 .column[
 ]
 .column[
-# Temp, Press
+#### The city is the windiest in the summer months. 
+
+#### Wind speed typically reaches its highest point between 1-2pm.
+
+#### The wind speed is above average for all locations in December.
+
+#### 87-89 Grattan St and the Cnr of Leicester and Pelham St have an above average wind speed, comparative to other locations
+
+#### 87-89 Grattan St and the Cnr of Leicester and Pelham St have less trees than the three sensors clustered together.
 
 ]
 .column[
@@ -538,7 +554,7 @@ class: split-three white center
 ]
 ]
 .row.bg-main3[.content.vmiddle[
-# When there is a significand differece between them
+
 ]]
 
 
