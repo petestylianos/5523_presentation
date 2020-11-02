@@ -30,12 +30,15 @@ class: title-slide, my-one-page-font
 
 
 
-_.left[ETC5523: Final Presentation]_
-<br>
+# Wind
 
-.left[Authors: <br><br>
-.blue[Emily Sheehan] <br><br>
-.blue[Panagiotis Stylianos]
+# 風
+
+
+
+.left[Authors: <br>
+.green[Emily Sheehan] <br>
+.green[Panagiotis Stylianos]
 ]  <br>
 
 _.left[`r Sys.Date()`]_
@@ -43,7 +46,6 @@ _.left[`r Sys.Date()`]_
 
 
 .footer[`r icon::fa('book')` ETC5523:Communicating with Data]
-
 ---
 class: middle center bg-main1
 
@@ -51,20 +53,8 @@ class: middle center bg-main1
 
 # 風
 
---
-## .blue[The Japanese word for wind]
 
---
-
-<img src="https://c4.wallpaperflare.com/wallpaper/30/379/591/anime-landscape-wallpaper-preview.jpg" width="40%">
-
---
-
-This slide is a tribute to _Yihui Xie_ creator of __[xaringan]("https://slides.yihui.org/xaringan/#1")__
-
-
----
-
+.footer[`r icon::fa('book')` ETC5523:Communicating with Data]
 
 ```{r xaringan-themer, message=FALSE, warning=FALSE, include=FALSE }
 library(xaringanthemer)
@@ -133,26 +123,17 @@ xaringanExtra::use_extra_styles(
 )
 xaringanExtra::use_tile_view()
 ```
-
-# When is the city windiest? Are different parts of the city windier than others?  
-
-### .white[Yes!]
-
-```{r echo=FALSE}
-knitr::include_graphics("https://media1.giphy.com/media/HmTLatwLWpTQk/giphy.gif?cid=ecf05e47155457f6vxh5f6rjvr84ipw53d5vi22i8kvu72dx&rid=giphy.gif") #<<
-```
-
-.footer[`r icon::fa('book')` ETC5523:Communicating with Data]
 ---
 class: inverse, center, middle, split-two with-thick-border border-green
-
 .column.bg-main1[
+<center>
+<middle>
 ```{r map, echo=FALSE}
 leaflet(loc) %>% 
   addProviderTiles("Esri") %>% 
   addMarkers(lng = loc$longitude,
              lat = loc$latitude,
-             popup = loc$site_id)
+             popup = loc$description)
 ```
 ]
 
@@ -224,12 +205,36 @@ The sensor that is located at *the corner of Pelham and Leicester Street, Carlto
 Arc.1047
 
 ]]
+
+.footer[`r icon::fa('book')` ETC5523:Communicating with Data]
+---
+
+## .white[**When is the city the windiest?**]
+
+
+--
+
+```{r echo=FALSE}
+knitr::include_graphics("https://media1.giphy.com/media/HmTLatwLWpTQk/giphy.gif?cid=ecf05e47155457f6vxh5f6rjvr84ipw53d5vi22i8kvu72dx&rid=giphy.gif") #<<
+```
+
+.footer[`r icon::fa('book')` ETC5523:Communicating with Data]
+
 ---
 
 ## .white[Monthly differences]
 
 .panelset[
 .panel[.panel-name[Summary]
+
+This plot shows the monthly difference for wind speed.
+
+>The wind speed tends to be highest around the **summer months**.
+
+>The wind speed is the lowest around the **winter months**, particularly for 87-89 Grattan St and the Cnr of Leiscester and Pelham St. 
+
+>The wind is fairly consistent throughout the year for 141 and 121 Grattan St, which makes sense given they are so close.
+
 ]
 
 .panel[.panel-name[Plot]
@@ -262,7 +267,8 @@ monthly_sensors %>%
 .panel[.panel-name[Summary]
 
 This plot shows the hourly difference for wind speed.
-Although it looks quite variable, it shows that the average wind speed for all locations happens around 5am. 
+
+> The wind speed peaks between **1pm and 2pm** for all locations.
 
 ]
 
@@ -291,7 +297,9 @@ monthly_sensors %>%
 
 This plot shows the days in the year when the wind speed was above average. 
 
-This figure supports the previous plot as it clearly shows December (a summer month) as having the most days with above average wind across all locations. 
+>This figure supports the previous plot as it clearly shows December (a summer month) as having the most days with above average wind across all locations. 
+
+> Another interesting observation is that windier days tend to occur consecutively (in bouts of 2-3 days). 
 
 ]
 
@@ -350,7 +358,17 @@ calendR(year = 2020,
 
 ---
 
-#### How is the wind speed different between sensors?
+
+## .white[**Are different parts of the city windier than others?**]
+
+--
+
+<img src="https://c4.wallpaperflare.com/wallpaper/30/379/591/anime-landscape-wallpaper-preview.jpg" width="40%">
+
+.footer[`r icon::fa('book')` ETC5523:Communicating with Data]
+---
+
+## .white[Are different parts of the city windier than others?]
 
 ```{r xaringan-panelset-1, echo=FALSE}
 xaringanExtra::use_panelset()
@@ -359,19 +377,15 @@ xaringanExtra::use_panelset()
 .panelset[
 .panel[.panel-name[Summary]
 
-This graph compares the average monthly wind speed for each location against the average yearly wind speed.
+This graph compares the average monthly wind speed for each location against the average yearly wind speed. To generate this graph we calculated the average yearly wind speed over the year for all locations, and then calculated the difference for each location and month.
 
-To generate this graph we calculated the average yearly wind speed over the year for all locations, and then calculated the difference for each location and month.
+>The summer months are less windy and the winter months have the highest wind speeds.
 
-The insights that we drew were:
+>The Cnr of Pelham and Leicester St and 87-89 Grattan St are the windiest areas over the year as they are consistently above the yearly average wind speed.
 
-The summer months are less windy and the winter months have the highest wind speeds.
+>The Cnr of Swanston and Grattan has higher wind speeds in September and October
 
-The Cnr of Pelham and Leicester St and 87-89 Grattan St are the windiest areas over the year as they are consistently above the yearly average wind speed.
-
-The Cnr of Swanston and Grattan has higher wind speeds in September and October
-
-The most .white[**interesting**] insight was that the wind speed varies .white[**greatly**] in Grattan St.
+>The most .white[**interesting**] insight was that the wind speed varies .white[**greatly**] in Grattan St.
 
 
 
@@ -418,7 +432,7 @@ ggplot(sensors_wind_average,
 
 ---
 
-#### Why is the wind speed different?
+## .white[Why is the wind speed different?]
 
 ```{r xaringan-panelset, echo=FALSE}
 xaringanExtra::use_panelset()
@@ -437,7 +451,7 @@ But do we have data for the location of 🌲 in Melbourne ?
 
 .panel[.panel-name[Plot]
 
-```{r, echo=FALSE, fig.width=12, fig.height=10}
+```{r, echo=FALSE, fig.width=14, fig.height=6}
 tree_data0 <- read_csv("trees_raw.csv")
 
 tree_data <- tree_data0 %>% 
@@ -485,24 +499,10 @@ leaflet() %>%
 ]
 
 ---
+class: center, inverse
 # Can we trust the data❓
 
-<br>
-
-<blockquote>
-For our results to be mpla mpla
-<br>—Pete Styl<br>
-
-</blockquote>
-
---
-
-<br>
-
 Let's review the quality of the dataset.
----
-
-class: center, inverse
 
 `r anicon::faa("exclamation-triangle", animate="vertical", size = 3)`
 
@@ -517,7 +517,6 @@ sensors %>%
 
 
 `r anicon::nia("No values between 0.01 and 4", animate = "tada")`
-
 ---
 
 class: split-three white center
@@ -547,13 +546,13 @@ class: split-three white center
 
 class: question middle
 
-Questions?
+# Questions
 
 ```{r}
 xaringanExtra::use_editable()
 ```
 
-Questions: <br>
+ <br>
 
 <span style="color:blue";>.can-edit[--]</span>
 
@@ -566,23 +565,12 @@ color_border              = "blue",
   color_finished_background = "red")`
 
 ---
-## Find us
+# Thank you!
+
+## .white[Find us]
 
 ```{r, fig.cap="Pete's Website", echo=FALSE}
 knitr::include_graphics("images/qr_pete.png") #<<
 ```
 
----
-## How did you find our presentation ?
-```{r}
-htmltools::HTML('<iframe src="https://pollev.com/petestyliano835"width="100%" height="100%"  frameBorder="0"></iframe>')
-
-```
-
----
-
-```{r}
-htmltools::HTML('<iframe src="https://www.polleverywhere.com/multiple_choice_polls/KQpS3Uo9TAd54YqLJPCO1" width="100%" height="100%" frameBorder="0"></iframe>')
-
-```
 
