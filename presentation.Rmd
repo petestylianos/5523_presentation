@@ -489,7 +489,7 @@ This graph compares the average monthly wind speed for each location against the
 
 >The summer months are less windy and the winter months have the highest wind speeds.
 
->The Cnr of Pelham and Leicester St and 87-89 Grattan St are the windiest areas over the year as they are consistently above the yearly average wind speed.
+>The Cnr of Pelham and Leicester St and 87-89 Grattan St are the __least__ windy areas over the year as they are consistently __below__ the yearly average wind speed.
 
 >The Cnr of Swanston and Grattan has higher wind speeds in September and October
 
@@ -604,13 +604,13 @@ xaringanExtra::use_panelset()
 
 As previously shown:
 
-> 87-89 Grattan St and the Cnr of Pelham and Leiscester St are windier than the other spots
+> 87-89 Grattan St and the Cnr of Pelham and Leiscester St are less windier than the other spots
 
 Notice from the map:
 
-> The other spots are clustered together and sit in between two parks with lots of trees which could explain the lower wind speed.
+> This sensors are sit in between two parks with lots of trees which could explain the lower wind speed.
 
-> 87-89 Grattan St and the Cnr of Pelham and Leiscester St have higher wind speeds and are relatively unprotected.  
+> 87-89 Grattan St and the Cnr of Pelham and Leiscester St have low wind speeds and are protected by a large cluster of trees.
 
 ]
 
@@ -749,9 +749,9 @@ class: split-two white center
 
 #### The wind speed is above average for all locations in December.
 
-#### 87-89 Grattan St and the Cnr of Leicester and Pelham St have an above average wind speed, comparative to other locations.
+#### 87-89 Grattan St and the Cnr of Leicester and Pelham St have a below average wind speed, comparative to other locations.
 
-#### 87-89 Grattan St and the Cnr of Leicester and Pelham St have less trees than the three sensors clustered together.
+#### 87-89 Grattan St and the Cnr of Leicester and Pelham St have more trees than the three sensors clustered together.
 
 ]
 ]
